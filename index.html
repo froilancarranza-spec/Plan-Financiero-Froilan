@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Presupuesto Vortex 2026</title>
+<title>Apex — Plan Financiero</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -19,6 +19,7 @@
   --amber:#fbbf24;--amberDim:#2d1f06;
   --red:#f87171;--redDim:#2d0f0f;
   --teal:#2dd4bf;--tealDim:#0a2320;
+  --orange:#fb923c;--orangeDim:#2d1506;
   --r:12px;--rs:8px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -27,12 +28,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:4px;}
 .shell{display:grid;grid-template-columns:230px 1fr;height:100vh;overflow:hidden;}
-/* SIDEBAR */
 .sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
 .sl{padding:20px 16px 14px;border-bottom:1px solid var(--border);}
 .logo{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
 .logo-ic{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.logo-ic i{color:#000;font-size:12px;}
+.logo-ic i{color:#000;font-size:13px;}
 .logo-t{font-size:14px;font-weight:700;color:var(--text);}
 .logo-s{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;}
 .usr{display:flex;align-items:center;gap:9px;}
@@ -53,19 +53,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .ni.active i{color:var(--accent);}
 .ni i{width:14px;font-size:12px;flex-shrink:0;}
 .sf{padding:10px 16px;border-top:1px solid var(--border);font-size:10px;color:var(--text3);}
-/* MAIN */
 .main{overflow-y:auto;background:var(--bg);}
 .page{display:none;padding:24px 28px;}
 .page.active{display:block;}
 .ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
 .pt{font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.02em;}
 .ps{font-size:11px;color:var(--text2);margin-top:3px;}
-/* CARDS */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;}
 .ct{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
 .ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;}
-/* METRIC GRID */
-.mg{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px;}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
 .mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;}
 .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r) var(--r) 0 0;}
 .mc.ca::before{background:var(--accent);}
@@ -73,12 +70,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .mc.cp::before{background:var(--purple);}
 .mc.cam::before{background:var(--amber);}
 .mc.cr2::before{background:var(--red);}
+.mc.co::before{background:var(--orange);}
 .ml{font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;}
 .mv{font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text);letter-spacing:-0.02em;line-height:1.1;}
 .ms{font-size:11px;color:var(--text2);margin-top:4px;}
 .ms.up{color:var(--accent);}
 .ms.dn{color:var(--red);}
-/* PILAR */
 .pg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
 .pc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;transition:border-color 0.15s;}
 .pc:hover{border-color:var(--border2);}
@@ -91,7 +88,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .pr{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin:7px 0 6px;}
 .pf{height:100%;border-radius:2px;transition:width 0.5s cubic-bezier(.4,0,.2,1);}
 .pstat{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);}
-/* CAT */
 .cg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .cc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}
 .cch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -100,7 +96,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .cr{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);}
 .cr:last-child{border-bottom:none;}
 .crv{font-family:'JetBrains Mono',monospace;color:var(--text);font-size:11px;}
-/* FORM */
 .fs{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px;}
 .ft{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .ft i{color:var(--accent);}
@@ -113,7 +108,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 input,select,textarea{font-family:'Inter',sans-serif;font-size:12px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rs);padding:7px 10px;color:var(--text);outline:none;width:100%;transition:border-color 0.12s;}
 input:focus,select:focus{border-color:var(--accent);background:var(--surface2);}
 select option{background:var(--surface2);}
-/* BUTTONS */
 .btn{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:var(--rs);border:none;cursor:pointer;transition:all 0.12s;display:inline-flex;align-items:center;gap:6px;}
 .ba{background:var(--accent);color:#000;}
 .ba:hover{background:var(--accent2);}
@@ -123,12 +117,10 @@ select option{background:var(--surface2);}
 .bx:hover{color:var(--red);background:var(--redDim);}
 .be{background:transparent;border:1px solid var(--border2);color:var(--text2);cursor:pointer;padding:3px 7px;border-radius:5px;font-size:11px;}
 .be:hover{color:var(--amber);border-color:var(--amber);}
-/* ALERT */
 .al{border-radius:var(--rs);padding:6px 10px;font-size:11px;font-weight:500;display:none;}
 .al.show{display:inline-block;}
 .al-ok{background:var(--accentDim);color:var(--accent);border:1px solid rgba(74,222,128,0.15);}
 .al-err{background:var(--redDim);color:var(--red);border:1px solid rgba(248,113,113,0.15);}
-/* LIST */
 .li{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
 .li:last-child{border-bottom:none;}
 .ll{display:flex;flex-direction:column;gap:2px;}
@@ -136,7 +128,6 @@ select option{background:var(--surface2);}
 .lm{font-size:10px;color:var(--text3);}
 .lr{display:flex;align-items:center;gap:7px;}
 .lv{font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;}
-/* BADGE */
 .badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap;}
 .badge-imprevistos{background:var(--accentDim);color:var(--accent);}
 .badge-oxigeno{background:var(--blueDim);color:var(--blue);}
@@ -148,28 +139,20 @@ select option{background:var(--surface2);}
 .badge-salud{background:var(--redDim);color:var(--red);}
 .badge-entretenimiento{background:var(--purpleDim);color:var(--purple);}
 .badge-prestamos{background:var(--amberDim);color:var(--amber);}
-/* ACTIVOS */
 .ar{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:var(--bg2);border-radius:var(--rs);margin-bottom:4px;border:1px solid var(--border);}
-/* CHART */
 .cw{position:relative;height:180px;}
 .cw2{position:relative;height:140px;}
-/* FILTERS */
 .fr{display:flex;gap:8px;margin-bottom:12px;}
 .fr select{flex:1;}
-/* INNER TABS */
 .it{display:flex;gap:2px;margin-bottom:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:3px;width:fit-content;}
 .itb{padding:5px 12px;font-size:11px;font-weight:500;cursor:pointer;border-radius:7px;color:var(--text2);background:transparent;border:none;}
 .itb.active{background:var(--surface3);color:var(--text);font-weight:600;}
 .itc{display:none;}
 .itc.active{display:block;}
-/* TOTAL ROW */
 .tr{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;color:var(--text2);}
 .tr strong{color:var(--text);}
-/* SCROLL */
 .sl2{max-height:290px;overflow-y:auto;}
-/* DIST */
 .db{height:10px;border-radius:5px;overflow:hidden;display:flex;margin:8px 0;}
-/* HORIZONTAL KPI BAR */
 .hbar-wrap{margin-bottom:10px;}
 .hbar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
 .hbar-label span:first-child{color:var(--text2);}
@@ -178,27 +161,55 @@ select option{background:var(--surface2);}
 .hbar-fill{height:100%;border-radius:4px;transition:width 0.5s cubic-bezier(.4,0,.2,1);}
 .hbar-limit{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.25);}
 .hbar-sub{font-size:10px;color:var(--text3);margin-top:2px;}
-/* CALC */
 .calc-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-top:10px;}
 .calc-title{font-size:11px;font-weight:600;color:var(--accent);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .calc-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;}
 .calc-result{font-size:12px;color:var(--text2);padding:8px 10px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);}
 .calc-result strong{color:var(--accent);font-family:'JetBrains Mono',monospace;}
-/* PROJ TABLE */
 .proj-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;}
 .proj-table th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);padding:6px 8px;border-bottom:1px solid var(--border);}
 .proj-table td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
 .proj-table tr:last-child td{border-bottom:none;}
 .proj-table td.mono{font-family:'JetBrains Mono',monospace;color:var(--text);}
 .proj-table td.pos{color:var(--accent);}
-/* RENDIMIENTOS CHART */
 .rend-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
 .rend-btn{padding:5px 12px;font-size:11px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all 0.12s;}
 .rend-btn.active{background:var(--accent);color:#000;border-color:var(--accent);}
 .rend-note{font-size:10px;color:var(--text3);padding:8px 10px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);}
-/* EDIT ROW */
 .edit-row{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--rs);padding:10px;margin-top:4px;}
 .edit-row .fg3{margin-bottom:0;}
+/* SCORE */
+.score-ring{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-num{font-size:42px;font-weight:700;font-family:'JetBrains Mono',monospace;line-height:1;}
+.score-lbl{font-size:11px;color:var(--text3);margin-top:4px;}
+/* SEMAFORO */
+.sem{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.sem-verde{background:var(--accentDim);color:var(--accent);}
+.sem-amarillo{background:var(--amberDim);color:var(--amber);}
+.sem-rojo{background:var(--redDim);color:var(--red);}
+/* ALERTA BANNER */
+.alert-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--rs);margin-bottom:8px;font-size:12px;}
+.alert-warn{background:var(--amberDim);border:1px solid rgba(251,191,36,0.2);color:var(--amber);}
+.alert-danger{background:var(--redDim);border:1px solid rgba(248,113,113,0.2);color:var(--red);}
+.alert-success{background:var(--accentDim);border:1px solid rgba(74,222,128,0.2);color:var(--accent);}
+.alert-info{background:var(--blueDim);border:1px solid rgba(96,165,250,0.2);color:var(--blue);}
+/* DEUDA */
+.deuda-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:8px;}
+.deuda-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.deuda-name{font-size:13px;font-weight:600;}
+.deuda-meta{font-size:10px;color:var(--text3);margin-top:2px;}
+/* INFLACION TABLE */
+.inf-table{width:100%;border-collapse:collapse;font-size:12px;}
+.inf-table th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);padding:6px 8px;border-bottom:1px solid var(--border);}
+.inf-table td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
+.inf-table tr:last-child td{border-bottom:none;}
+.inf-table td.mono{font-family:'JetBrains Mono',monospace;color:var(--text);}
+/* PATRIMONIO */
+.pat-bar{height:12px;border-radius:6px;overflow:hidden;display:flex;margin:10px 0;}
+/* NUMERO DORADO */
+.golden-display{text-align:center;padding:20px;background:linear-gradient(135deg,var(--amberDim),var(--surface2));border:1px solid rgba(251,191,36,0.2);border-radius:var(--r);margin-bottom:14px;}
+.golden-num{font-size:36px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--amber);}
+.golden-lbl{font-size:11px;color:var(--text3);margin-top:4px;}
 @media(max-width:960px){.shell{grid-template-columns:1fr;}.sidebar{display:none;}.mg{grid-template-columns:1fr 1fr;}.pg{grid-template-columns:1fr;}.cg{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -209,15 +220,8 @@ select option{background:var(--surface2);}
 <aside class="sidebar">
   <div class="sl">
     <div class="logo">
-      <div class="logo-ic"><i class="fa-solid fa-tornado"></i></div>
-      <div>
-        <div style="display:flex;align-items:center;gap:4px;">
-          <span id="ltitle-display" class="logo-t">Plan Financiero</span>
-          <button class="edit-name-btn" onclick="toggleTitleEdit()" title="Editar título"><i class="fa-solid fa-pen"></i></button>
-        </div>
-        <input type="text" id="ltitle-input" style="font-size:14px;font-weight:700;background:var(--surface2);border:1px solid var(--accent);border-radius:4px;color:var(--text);padding:2px 6px;width:100%;display:none;" placeholder="Título del plan" onblur="saveTitle()" onkeydown="if(event.key==='Enter')saveTitle()"/>
-        <div class="logo-s">Tu estrategia financiera</div>
-      </div>
+      <div class="logo-ic"><i class="fa-solid fa-mountain-sun"></i></div>
+      <div><div class="logo-t">Apex</div><div class="logo-s">Plan financiero</div></div>
     </div>
     <div class="usr">
       <div class="av" id="avLetter">F</div>
@@ -227,15 +231,18 @@ select option{background:var(--surface2);}
           <button class="edit-name-btn" onclick="toggleNameEdit()" title="Editar nombre"><i class="fa-solid fa-pen"></i></button>
         </div>
         <input type="text" id="uname-input" placeholder="Tu nombre" onblur="saveName()" onkeydown="if(event.key==='Enter')saveName()"/>
-        <div class="usub">Plan Financiero</div>
+        <div class="usub">Plan Financiero Personal</div>
       </div>
     </div>
   </div>
   <nav class="nav">
     <div class="ns"><div class="nl">Principal</div>
       <div class="ni active" onclick="go('dashboard')"><i class="fa-solid fa-chart-pie"></i> Panel general</div>
-      <div class="ni" onclick="go('pilares')"><i class="fa-solid fa-layer-group"></i> Pilares Vortex</div>
+      <div class="ni" onclick="go('pilares')"><i class="fa-solid fa-layer-group"></i> Los 4 pilares</div>
       <div class="ni" onclick="go('activos')"><i class="fa-solid fa-coins"></i> Activos</div>
+      <div class="ni" onclick="go('patrimonio')"><i class="fa-solid fa-scale-balanced"></i> Patrimonio neto</div>
+      <div class="ni" onclick="go('libertad')"><i class="fa-solid fa-flag-checkered"></i> Libertad financiera</div>
+      <div class="ni" onclick="go('deudas')"><i class="fa-solid fa-hand-holding-dollar"></i> Deudas</div>
     </div>
     <div class="ns"><div class="nl">Movimientos</div>
       <div class="ni" onclick="go('registro')"><i class="fa-solid fa-plus"></i> Registrar gasto</div>
@@ -246,7 +253,7 @@ select option{background:var(--surface2);}
       <div class="ni" onclick="go('config')"><i class="fa-solid fa-sliders"></i> Configuración</div>
     </div>
   </nav>
-  <div class="sf"><i class="fa-solid fa-circle" style="color:var(--accent);font-size:6px;"></i> Datos en sesión local</div>
+  <div class="sf"><i class="fa-solid fa-circle" style="color:var(--accent);font-size:6px;"></i> Datos guardados localmente</div>
 </aside>
 
 <!-- MAIN -->
@@ -256,70 +263,48 @@ select option{background:var(--surface2);}
 <div id="page-dashboard" class="page active">
   <div class="ph">
     <div><div class="pt">Panel general</div><div class="ps" id="dfecha">—</div></div>
-    <button class="btn bg2b" onclick="exportarCSV()"><i class="fa-solid fa-download"></i> CSV</button>
+    <div style="display:flex;gap:8px;">
+      <button class="btn bg2b" onclick="go('alertas')" id="btnAlertas"><i class="fa-solid fa-bell"></i> Alertas <span id="alertCount" style="background:var(--red);color:#fff;border-radius:10px;padding:1px 5px;font-size:10px;display:none;"></span></button>
+      <button class="btn bg2b" onclick="exportarCSV()"><i class="fa-solid fa-download"></i> CSV</button>
+    </div>
   </div>
+  <div id="alertasBanner"></div>
   <div class="mg" id="dmetrics"></div>
-
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-    <!-- KPI Regla 70/20/10 -->
-    <div class="card">
-      <div class="ch"><div class="ct">Regla 70 / 20 / 10 — avance mensual</div></div>
-      <div id="kpi7020"></div>
-    </div>
-    <!-- KPI Categorías vs presupuestado -->
-    <div class="card">
-      <div class="ch"><div class="ct">Categorías vs. presupuesto mensual</div></div>
-      <div id="kpicats"></div>
-    </div>
+    <div class="card"><div class="ch"><div class="ct">Regla 70 / 20 / 10 — avance mensual</div></div><div id="kpi7020"></div></div>
+    <div class="card"><div class="ch"><div class="ct">Categorías vs. presupuesto mensual</div></div><div id="kpicats"></div></div>
   </div>
-
   <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:10px;margin-bottom:14px;">
     <div class="card">
       <div class="ch"><div class="ct">Distribución mensual</div><div id="cleg" style="display:flex;flex-wrap:wrap;gap:6px;font-size:10px;color:var(--text3);"></div></div>
-      <div class="cw"><canvas id="chartD" role="img" aria-label="Distribución mensual"></canvas></div>
+      <div class="cw"><canvas id="chartD"></canvas></div>
     </div>
-    <div class="card">
-      <div class="ch"><div class="ct">Pilares — mes actual</div></div>
-      <div id="dpilmini"></div>
-    </div>
+    <div class="card"><div class="ch"><div class="ct">Pilares — mes actual</div></div><div id="dpilmini"></div></div>
   </div>
   <div class="card"><div class="ch"><div class="ct">Últimas transacciones</div></div><div class="sl2" id="dultimos"></div></div>
 </div>
 
 <!-- PILARES -->
 <div id="page-pilares" class="page">
-  <div class="ph"><div><div class="pt">Los 4 pilares Vortex</div><div class="ps">Progreso y calculadora interactiva</div></div></div>
+  <div class="ph"><div><div class="pt">Los 4 pilares</div><div class="ps">Progreso y calculadora interactiva</div></div></div>
   <div class="pg" id="pilaresfull"></div>
-  <div class="card">
-    <div class="ch"><div class="ct">Calculadora de proyección por pilar</div></div>
-    <div id="pilcalc"></div>
-  </div>
+  <div class="card"><div class="ch"><div class="ct">Calculadora de proyección por pilar</div></div><div id="pilcalc"></div></div>
 </div>
 
 <!-- ACTIVOS -->
 <div id="page-activos" class="page">
   <div class="ph"><div><div class="pt">Activos por pilar</div><div class="ps">Instrumentos financieros y rendimientos</div></div></div>
-
-  <!-- Rendimientos -->
   <div class="card" style="margin-bottom:14px;">
-    <div class="ch"><div class="ct">Rendimientos acumulados</div>
-      <div style="font-size:10px;color:var(--text3);"><i class="fa-solid fa-circle-info"></i> Basado en rentabilidades registradas</div>
-    </div>
+    <div class="ch"><div class="ct">Rendimientos acumulados</div><div style="font-size:10px;color:var(--text3);"><i class="fa-solid fa-circle-info"></i> Basado en rentabilidades registradas</div></div>
     <div class="rend-controls" id="rendControls"></div>
-    <div style="position:relative;height:200px;"><canvas id="chartRend" role="img" aria-label="Gráfico de rendimientos por pilar"></canvas></div>
-    <div class="rend-note" style="margin-top:10px;">
-      <i class="fa-solid fa-info-circle" style="color:var(--amber);"></i>
-      Los valores se calculan con la rentabilidad anual estimada de cada activo registrado. Para datos de mercado en tiempo real de acciones o ETFs, visita
-      <a href="https://finance.google.com" target="_blank" style="color:var(--blue);">Google Finance</a> o
-      <a href="https://www.tradingview.com" target="_blank" style="color:var(--blue);">TradingView</a>.
-    </div>
+    <div style="position:relative;height:200px;"><canvas id="chartRend"></canvas></div>
+    <div class="rend-note" style="margin-top:10px;"><i class="fa-solid fa-info-circle" style="color:var(--amber);"></i> Para datos en tiempo real visita <a href="https://finance.google.com" target="_blank" style="color:var(--blue);">Google Finance</a> o <a href="https://www.tradingview.com" target="_blank" style="color:var(--blue);">TradingView</a>.</div>
   </div>
-
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;" id="actgrid"></div>
   <div class="fs">
     <div class="ft"><i class="fa-solid fa-plus"></i> Agregar activo</div>
     <div class="fg">
-      <div class="fgrp"><div class="fl">Nombre del activo</div><input type="text" id="an" placeholder="CDT Davivienda, ETF S&P500, Acciones Ecopetrol..."/></div>
+      <div class="fgrp"><div class="fl">Nombre del activo</div><input type="text" id="an" placeholder="CDT Davivienda, ETF S&P500..."/></div>
       <div class="fgrp"><div class="fl">Valor actual (COP)</div><input type="number" id="av2" placeholder="5000000" min="0"/></div>
       <div class="fgrp"><div class="fl">Pilar</div>
         <select id="ap"><option value="imprevistos">Fondo imprevistos</option><option value="oxigeno">Reserva oxígeno</option><option value="retiro">Cuenta retiro</option><option value="inversiones">Inversiones</option></select>
@@ -331,7 +316,7 @@ select option{background:var(--surface2);}
       </div>
       <div class="fgrp"><div class="fl">Rentabilidad anual (%)</div><input type="number" id="arp" placeholder="6.5" step="0.1"/></div>
     </div>
-    <div class="fgrp" style="margin-bottom:12px;"><div class="fl">Notas (entidad, vencimiento, etc.)</div><input type="text" id="anotaA" placeholder="Banco Bogotá, vence dic 2026"/></div>
+    <div class="fgrp" style="margin-bottom:12px;"><div class="fl">Notas</div><input type="text" id="anotaA" placeholder="Banco Bogotá, vence dic 2026"/></div>
     <div style="display:flex;align-items:center;gap:10px;">
       <button class="btn ba" onclick="addActivo()"><i class="fa-solid fa-plus"></i> Agregar</button>
       <div class="al al-ok" id="amsg"></div>
@@ -339,9 +324,124 @@ select option{background:var(--surface2);}
   </div>
 </div>
 
+<!-- PATRIMONIO NETO -->
+<div id="page-patrimonio" class="page">
+  <div class="ph"><div><div class="pt">Patrimonio neto</div><div class="ps">Activos totales minus pasivos — tu riqueza real</div></div></div>
+  <div class="mg" id="patMetrics"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="ch"><div class="ct" style="color:var(--accent);">Activos totales</div><button class="btn ba" style="font-size:10px;padding:3px 8px;" onclick="showPatForm('activo')"><i class="fa-solid fa-plus"></i> Agregar</button></div>
+        <div id="patActivosList"></div>
+        <div id="patActivoForm" style="display:none;margin-top:10px;" class="edit-row">
+          <div class="fg3" style="margin-bottom:8px;">
+            <div class="fgrp"><div class="fl">Descripción</div><input type="text" id="patActNom" placeholder="Casa, carro, CDT..."/></div>
+            <div class="fgrp"><div class="fl">Valor (COP)</div><input type="number" id="patActVal" placeholder="0"/></div>
+            <div class="fgrp"><div class="fl">Categoría</div>
+              <select id="patActCat"><option>Inmueble</option><option>Vehículo</option><option>Ahorros / CDT</option><option>Inversiones</option><option>Pensión</option><option>Otros</option></select>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn ba" style="font-size:11px;padding:4px 10px;" onclick="addPatActivo()">Guardar</button>
+            <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="hidePatForm('activo')">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="ch"><div class="ct" style="color:var(--red);">Pasivos (deudas)</div><button class="btn bg2b" style="font-size:10px;padding:3px 8px;border-color:var(--red);color:var(--red);" onclick="showPatForm('pasivo')"><i class="fa-solid fa-plus"></i> Agregar</button></div>
+        <div id="patPasivosList"></div>
+        <div id="patPasivoForm" style="display:none;margin-top:10px;" class="edit-row">
+          <div class="fg3" style="margin-bottom:8px;">
+            <div class="fgrp"><div class="fl">Descripción</div><input type="text" id="patPasNom" placeholder="Hipoteca, crédito..."/></div>
+            <div class="fgrp"><div class="fl">Saldo (COP)</div><input type="number" id="patPasVal" placeholder="0"/></div>
+            <div class="fgrp"><div class="fl">Categoría</div>
+              <select id="patPasCat"><option>Hipoteca</option><option>Crédito vehículo</option><option>Crédito personal</option><option>Tarjeta crédito</option><option>Otros</option></select>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn ba" style="font-size:11px;padding:4px 10px;" onclick="addPatPasivo()">Guardar</button>
+            <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="hidePatForm('pasivo')">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Evolución del patrimonio neto — mes a mes</div></div>
+    <div style="position:relative;height:200px;"><canvas id="chartPat"></canvas></div>
+    <div style="font-size:10px;color:var(--text3);margin-top:8px;"><i class="fa-solid fa-circle-info"></i> Registra tu patrimonio mensualmente para ver la evolución. Cada vez que guardes configuración se toma una instantánea.</div>
+  </div>
+</div>
+
+<!-- LIBERTAD FINANCIERA -->
+<div id="page-libertad" class="page">
+  <div class="ph"><div><div class="pt">Libertad financiera</div><div class="ps">Número dorado · Score Apex · Proyecciones</div></div></div>
+  <div id="goldDisplay"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+    <div class="card">
+      <div class="ch"><div class="ct">Score Apex — salud financiera</div></div>
+      <div id="scoreDisplay"></div>
+      <div id="scoreDetalle" style="margin-top:12px;"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">¿Cuándo alcanzo la libertad?</div></div>
+      <div id="libertadProj"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ch"><div class="ct">Simulador de independencia financiera</div></div>
+    <div class="fg4" style="margin-bottom:14px;">
+      <div class="fgrp"><div class="fl">Ahorro mensual (COP)</div><input type="number" id="simAhorro" placeholder="938793" oninput="calcLibertad()"/></div>
+      <div class="fgrp"><div class="fl">Retorno anual (%)</div><input type="number" id="simRetorno" value="8" step="0.5" oninput="calcLibertad()"/></div>
+      <div class="fgrp"><div class="fl">Inflación proyectada (%)</div><input type="number" id="simInflacion" value="5.1" step="0.1" oninput="calcLibertad()"/></div>
+      <div class="fgrp"><div class="fl">Retorno neto real</div><input type="text" id="simNeto" readonly style="color:var(--teal);font-weight:600;"/></div>
+    </div>
+    <div id="libertadTable"></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Proyección de crecimiento patrimonial</div></div>
+    <div style="position:relative;height:220px;"><canvas id="chartLibertad"></canvas></div>
+  </div>
+</div>
+
+<!-- DEUDAS -->
+<div id="page-deudas" class="page">
+  <div class="ph"><div><div class="pt">Análisis de deudas</div><div class="ps">Avalancha vs Bola de Nieve</div></div></div>
+  <div class="mg" id="deudaMetrics"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+    <div class="card">
+      <div class="ch"><div class="ct" style="color:var(--red);">Estrategia Avalancha</div><div style="font-size:10px;color:var(--text3);">Mayor tasa primero</div></div>
+      <div id="avalanchaResult"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct" style="color:var(--blue);">Estrategia Bola de Nieve</div><div style="font-size:10px;color:var(--text3);">Menor saldo primero</div></div>
+      <div id="bolaNieveResult"></div>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ch"><div class="ct">Mis deudas registradas</div></div>
+    <div id="deudasList"></div>
+  </div>
+  <div class="fs">
+    <div class="ft"><i class="fa-solid fa-plus"></i> Registrar deuda</div>
+    <div class="fg4">
+      <div class="fgrp"><div class="fl">Nombre / Entidad</div><input type="text" id="dNom" placeholder="Banco, Jamar..."/></div>
+      <div class="fgrp"><div class="fl">Saldo actual (COP)</div><input type="number" id="dSaldo" placeholder="0"/></div>
+      <div class="fgrp"><div class="fl">Tasa mensual (%)</div><input type="number" id="dTasa" placeholder="2.5" step="0.1"/></div>
+      <div class="fgrp"><div class="fl">Cuota mensual (COP)</div><input type="number" id="dCuota" placeholder="280000"/></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn ba" onclick="addDeuda()"><i class="fa-solid fa-plus"></i> Agregar deuda</button>
+      <div class="al al-ok" id="deudaMsg"></div>
+    </div>
+  </div>
+</div>
+
 <!-- REGISTRO -->
 <div id="page-registro" class="page">
-  <div class="ph"><div><div class="pt">Registrar gasto</div><div class="ps">Añade un movimiento de hoy</div></div></div>
+  <div class="ph"><div><div class="pt">Registrar gasto</div><div class="ps">Añade un movimiento</div></div></div>
   <div class="fs">
     <div class="ft"><i class="fa-solid fa-receipt"></i> Nuevo movimiento</div>
     <div class="fg">
@@ -359,7 +459,7 @@ select option{background:var(--surface2);}
           <option value="retiro">Cuenta retiro</option><option value="inversiones">Inversiones</option>
         </select>
       </div>
-      <div class="fgrp"><div class="fl">Subcategoría</div><input type="text" id="isub" placeholder="Arriendo, streaming, gasolina..."/></div>
+      <div class="fgrp"><div class="fl">Subcategoría</div><input type="text" id="isub" placeholder="Arriendo, streaming..."/></div>
     </div>
     <div class="fgrp" style="margin-bottom:12px;"><div class="fl">Nota</div><input type="text" id="inota" placeholder="Observación opcional"/></div>
     <div style="display:flex;align-items:center;gap:10px;">
@@ -410,7 +510,7 @@ select option{background:var(--surface2);}
       <div class="fg4" style="margin-bottom:14px;">
         <div class="fgrp"><div class="fl">Ahorro mensual (COP)</div><input type="number" id="pAhorro" placeholder="938793" oninput="calcProj()"/></div>
         <div class="fgrp"><div class="fl">Retorno anual (%)</div><input type="number" id="pRetorno" value="8" step="0.5" oninput="calcProj()"/></div>
-        <div class="fgrp"><div class="fl">Inflación anual (%)</div><input type="number" id="pInflacion" value="6" step="0.5" oninput="calcProj()"/></div>
+        <div class="fgrp"><div class="fl">Inflación anual (%)</div><input type="number" id="pInflacion" value="5.1" step="0.5" oninput="calcProj()"/></div>
         <div class="fgrp"><div class="fl">Retorno neto</div><input type="text" id="pNeto" readonly style="color:var(--accent);font-weight:600;"/></div>
       </div>
       <div id="projresult"></div>
@@ -421,8 +521,6 @@ select option{background:var(--surface2);}
 <!-- CONFIG -->
 <div id="page-config" class="page">
   <div class="ph"><div><div class="pt">Configuración</div></div></div>
-
-  <!-- Ingresos adicionales -->
   <div class="fs">
     <div class="ft"><i class="fa-solid fa-wallet"></i> Ingresos</div>
     <div class="fg3" style="margin-bottom:10px;">
@@ -433,22 +531,16 @@ select option{background:var(--surface2);}
     <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;">Otros ingresos (bonos, primas, cesantías...)</div>
     <div id="otrosIngresos"></div>
     <div class="fg4" style="margin-top:10px;">
-      <div class="fgrp"><div class="fl">Descripción</div><input type="text" id="oi-desc" placeholder="Prima de servicios, bono..."/></div>
+      <div class="fgrp"><div class="fl">Descripción</div><input type="text" id="oi-desc" placeholder="Prima de servicios..."/></div>
       <div class="fgrp"><div class="fl">Valor (COP)</div><input type="number" id="oi-valor" placeholder="9387932"/></div>
       <div class="fgrp"><div class="fl">Frecuencia</div>
-        <select id="oi-frec">
-          <option value="mensual">Mensual</option>
-          <option value="semestral">Semestral</option>
-          <option value="anual">Anual</option>
-        </select>
+        <select id="oi-frec"><option value="mensual">Mensual</option><option value="semestral">Semestral</option><option value="anual">Anual</option></select>
       </div>
-      <div class="fgrp"><div class="fl">Fecha estimada de pago</div><input type="date" id="oi-fecha"/></div>
+      <div class="fgrp"><div class="fl">Fecha estimada</div><input type="date" id="oi-fecha"/></div>
     </div>
     <button class="btn ba" style="margin-top:8px;" onclick="addOtroIngreso()"><i class="fa-solid fa-plus"></i> Agregar ingreso</button>
-    <div style="margin-top:8px;font-size:10px;color:var(--text3);"><i class="fa-solid fa-circle-info"></i> Las primas y cesantías se registran pero NO se suman al ingreso mensual base. Aparecen cuando llega su fecha.</div>
+    <div style="margin-top:8px;font-size:10px;color:var(--text3);"><i class="fa-solid fa-circle-info"></i> Las primas y cesantías NO se suman al ingreso mensual base.</div>
   </div>
-
-  <!-- Pilares -->
   <div class="fs">
     <div class="ft"><i class="fa-solid fa-arrow-trend-up"></i> Aportes mensuales a pilares</div>
     <div class="fg2">
@@ -458,8 +550,6 @@ select option{background:var(--surface2);}
       <div class="fgrp"><div class="fl">Cuenta inversiones</div><input type="number" id="cinv"/></div>
     </div>
   </div>
-
-  <!-- Acumulado -->
   <div class="fs">
     <div class="ft"><i class="fa-solid fa-piggy-bank"></i> Saldo acumulado actual</div>
     <div class="fg2">
@@ -469,7 +559,22 @@ select option{background:var(--surface2);}
       <div class="fgrp"><div class="fl">Inversiones</div><input type="number" id="cainv"/></div>
     </div>
   </div>
-
+  <div class="fs">
+    <div class="ft"><i class="fa-solid fa-chart-line"></i> Inflación Colombia — histórico IPC (DANE)</div>
+    <div class="fg4" style="margin-bottom:10px;">
+      <div class="fgrp"><div class="fl">2020</div><input type="number" id="inf2020" value="1.61" step="0.01"/></div>
+      <div class="fgrp"><div class="fl">2021</div><input type="number" id="inf2021" value="5.62" step="0.01"/></div>
+      <div class="fgrp"><div class="fl">2022</div><input type="number" id="inf2022" value="13.12" step="0.01"/></div>
+      <div class="fgrp"><div class="fl">2023</div><input type="number" id="inf2023" value="9.28" step="0.01"/></div>
+    </div>
+    <div class="fg4" style="margin-bottom:10px;">
+      <div class="fgrp"><div class="fl">2024</div><input type="number" id="inf2024" value="5.20" step="0.01"/></div>
+      <div class="fgrp"><div class="fl">2025</div><input type="number" id="inf2025" value="5.10" step="0.01"/></div>
+      <div class="fgrp"><div class="fl">2026 (proyección)</div><input type="number" id="inf2026" value="4.50" step="0.01"/></div>
+      <div class="fgrp"><div class="fl">Inflación referencia</div><input type="number" id="infRef" step="0.01" style="color:var(--teal);font-weight:600;" readonly/></div>
+    </div>
+    <div style="font-size:10px;color:var(--text3);"><i class="fa-solid fa-circle-info"></i> Fuente: DANE. La inflación de referencia usa el promedio 2020-2025 y afecta el Número Dorado, proyecciones de libertad financiera y metas de pilares.</div>
+  </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <button class="btn ba" onclick="saveConfig()"><i class="fa-solid fa-floppy-disk"></i> Guardar todo</button>
     <div class="al al-ok" id="cfgmsg"></div>
@@ -480,8 +585,22 @@ select option{background:var(--surface2);}
 </div>
 <script>
 // ══════════════════════════════════════════════════════════
-// STATE
+// MIGRACIÓN + STATE
 // ══════════════════════════════════════════════════════════
+function migrar(){
+  try{
+    const viejo=localStorage.getItem('vx4');
+    if(viejo&&!localStorage.getItem('apex1')){
+      localStorage.setItem('apex1',viejo);
+      localStorage.removeItem('vx4');
+    }
+  }catch(e){}
+}
+migrar();
+
+const IPC_HIST={2020:1.61,2021:5.62,2022:13.12,2023:9.28,2024:5.20,2025:5.10,2026:4.50};
+const IPC_REF=parseFloat(((1.61+5.62+13.12+9.28+5.20+5.10)/6).toFixed(2));
+
 const DEF={
   nombre:'Froilan Carranza',
   ingreso:9387932,
@@ -531,7 +650,12 @@ const DEF={
       {id:25,i:'Jamar',t:'No nec.',m:280000},
       {id:26,i:'Tiquetes aéreos',t:'No nec.',m:300000}
     ]
-  }
+  },
+  patActivos:[],
+  patPasivos:[],
+  patHistorial:[],
+  deudas:[],
+  ipc:{2020:1.61,2021:5.62,2022:13.12,2023:9.28,2024:5.20,2025:5.10,2026:4.50}
 };
 
 const PCAT_CAT_MAP={'Vivienda':'vivienda','Alimentación':'alimentacion','Transporte':'transporte','Salud':'salud','Entretenimiento':'entretenimiento','Préstamos':'prestamos'};
@@ -545,42 +669,30 @@ const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','
 const TIPOS=['Necesario','No nec.','Ahorro'];
 
 let S={...DEF,salidas:JSON.parse(JSON.stringify(DEF.salidas))};
-let CI=null,CR=null;
-let editSalidaId=null;
+let CI=null,CR=null,CPat=null,CLib=null;
 
-function ld(){try{const r=localStorage.getItem('vx4');if(r){const p=JSON.parse(r);S={...DEF,...p,salidas:p.salidas||JSON.parse(JSON.stringify(DEF.salidas)),otrosIngresos:p.otrosIngresos||[]};}}catch(e){}}
-function sv(){try{localStorage.setItem('vx4',JSON.stringify(S));}catch(e){}}
+function ld(){try{const r=localStorage.getItem('apex1');if(r){const p=JSON.parse(r);S={...DEF,...p,salidas:p.salidas||JSON.parse(JSON.stringify(DEF.salidas)),otrosIngresos:p.otrosIngresos||[],patActivos:p.patActivos||[],patPasivos:p.patPasivos||[],patHistorial:p.patHistorial||[],deudas:p.deudas||[],ipc:p.ipc||DEF.ipc};}}catch(e){}}
+function sv(){try{localStorage.setItem('apex1',JSON.stringify(S));}catch(e){}}
 function fmt(n){return new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0,maximumFractionDigits:0}).format(n||0);}
 function hoy(){return new Date().toISOString().split('T')[0];}
 function gm(cat){const n=new Date();return S.gastos.filter(g=>{const d=new Date(g.fecha);return(!cat||g.cat===cat)&&d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}).reduce((s,g)=>s+g.monto,0);}
 function metas(){return{imprevistos:S.ingreso,oxigeno:S.ingreso*6,retiro:S.ingreso*12*10,inversiones:S.ingreso*12*5};}
-function salPresupuestoCat(catLabel){const items=S.salidas[catLabel]||[];return items.reduce((s,i)=>s+i.m,0);}
+function salPresupuestoCat(catLabel){return(S.salidas[catLabel]||[]).reduce((s,i)=>s+i.m,0);}
 function nextId(){return Date.now();}
+function getInflRef(){return S.ipc?parseFloat(((Object.values(S.ipc).reduce((a,b)=>a+b,0)/Object.values(S.ipc).length).toFixed(2))):IPC_REF;}
 
 // ══════════════════════════════════════════════════════════
-// NOMBRE EDITABLE
+// NOMBRE
 // ══════════════════════════════════════════════════════════
 function toggleNameEdit(){
   const disp=document.getElementById('uname-display'),inp=document.getElementById('uname-input');
-  if(inp.style.display==='none'||!inp.style.display){
-    inp.value=S.nombre;inp.style.display='block';disp.style.display='none';inp.focus();
-  } else saveName();
+  if(inp.style.display==='none'||!inp.style.display){inp.value=S.nombre;inp.style.display='block';disp.style.display='none';inp.focus();}
+  else saveName();
 }
 function saveName(){
   const inp=document.getElementById('uname-input'),val=inp.value.trim();
   if(val){S.nombre=val;document.getElementById('uname-display').textContent=val;document.getElementById('avLetter').textContent=val[0].toUpperCase();sv();}
   inp.style.display='none';document.getElementById('uname-display').style.display='';
-}
-function toggleTitleEdit(){
-  const disp=document.getElementById('ltitle-display'),inp=document.getElementById('ltitle-input');
-  if(inp.style.display==='none'||!inp.style.display){
-    inp.value=S.titulo||'Plan Financiero';inp.style.display='block';disp.style.display='none';inp.focus();
-  } else saveTitle();
-}
-function saveTitle(){
-  const inp=document.getElementById('ltitle-input'),val=inp.value.trim();
-  if(val){S.titulo=val;document.getElementById('ltitle-display').textContent=val;sv();}
-  inp.style.display='none';document.getElementById('ltitle-display').style.display='';
 }
 
 // ══════════════════════════════════════════════════════════
@@ -591,7 +703,7 @@ function go(id){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.ni').forEach(it=>{if(it.getAttribute('onclick')&&it.getAttribute('onclick').includes("'"+id+"'"))it.classList.add('active');});
-  ({dashboard:rD,pilares:rP,activos:rA,registro:rU8,historial:renderHist,presupuesto:rPres,config:lCfg})[id]?.();
+  ({dashboard:rD,pilares:rP,activos:rA,patrimonio:rPat,libertad:rLibertad,deudas:rDeudas,registro:rU8,historial:renderHist,presupuesto:rPres,config:lCfg})[id]?.();
 }
 function sit(id,page){
   const par=document.getElementById('page-'+page);
@@ -605,75 +717,81 @@ function sit(id,page){
 }
 
 // ══════════════════════════════════════════════════════════
+// ALERTAS INTELIGENTES
+// ══════════════════════════════════════════════════════════
+function calcAlertas(){
+  const alerts=[];
+  const cats=['vivienda','alimentacion','transporte','salud','entretenimiento','prestamos'];
+  cats.forEach(cat=>{
+    const gastado=gm(cat),catLabel=Object.keys(PCAT_CAT_MAP).find(k=>PCAT_CAT_MAP[k]===cat);
+    const presup=catLabel?salPresupuestoCat(catLabel):0;
+    if(presup>0){
+      const pct=gastado/presup*100;
+      if(pct>=100)alerts.push({tipo:'danger',msg:`⚠ ${CL[cat]}: superaste el presupuesto (${pct.toFixed(0)}% — ${fmt(gastado)} de ${fmt(presup)})`});
+      else if(pct>=80)alerts.push({tipo:'warn',msg:`🔔 ${CL[cat]}: al ${pct.toFixed(0)}% del presupuesto (${fmt(gastado)} de ${fmt(presup)})`});
+    }
+  });
+  const tot=gm(),tasaAhorro=(S.ingreso-tot)/S.ingreso*100;
+  if(tot>0&&tasaAhorro<10)alerts.push({tipo:'warn',msg:`📉 Tasa de ahorro este mes: ${tasaAhorro.toFixed(1)}% — por debajo del objetivo 20%`});
+  const mt=metas();
+  ['imprevistos','oxigeno','retiro','inversiones'].forEach(p=>{
+    if(S.acum[p]>=mt[p])alerts.push({tipo:'success',msg:`🎉 ¡Pilar ${PN[p]} completado! Meta de ${fmt(mt[p])} alcanzada.`});
+  });
+  const ipcRef=getInflRef();
+  if(ipcRef>8)alerts.push({tipo:'warn',msg:`📊 Inflación de referencia alta (${ipcRef.toFixed(1)}%) — tus proyecciones pueden verse afectadas`});
+  return alerts;
+}
+
+// ══════════════════════════════════════════════════════════
 // DASHBOARD
 // ══════════════════════════════════════════════════════════
 function rD(){
   const now=new Date();
   document.getElementById('dfecha').textContent=MESES[now.getMonth()]+' '+now.getFullYear();
   const tot=gm(),disp=S.ingreso-tot,pg=Math.min(tot/S.ingreso*100,100),ta=Object.values(S.acum).reduce((a,b)=>a+b,0);
-
-  // Check ingreso adicional del mes
-  const ingAdic = S.otrosIngresos.filter(o=>{
-    if(!o.fecha) return false;
-    const d=new Date(o.fecha);
-    return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()&&o.frec==='mensual';
-  }).reduce((s,o)=>s+o.valor,0);
+  const ingAdic=S.otrosIngresos.filter(o=>{if(!o.fecha)return false;const d=new Date(o.fecha);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()&&o.frec==='mensual';}).reduce((s,o)=>s+o.valor,0);
   const ingresoTotal=S.ingreso+ingAdic;
+  const patNeto=S.patActivos.reduce((s,a)=>s+a.valor,0)-S.patPasivos.reduce((s,a)=>s+a.valor,0);
 
-  // Presupuesto total (suma de todas las salidas fijas)
-  const presTotal=Object.values(S.salidas).reduce((s,cat)=>s+cat.reduce((a,i)=>a+i.m,0),0);
-  const difPres=ingresoTotal-presTotal;
-  const difPct=(ingresoTotal>0?(difPres/ingresoTotal*100):0).toFixed(1);
+  // Alertas banner
+  const alertas=calcAlertas();
+  const ac=document.getElementById('alertCount');
+  if(alertas.length>0){ac.style.display='';ac.textContent=alertas.length;}else{ac.style.display='none';}
+  document.getElementById('alertasBanner').innerHTML=alertas.slice(0,3).map(a=>
+    `<div class="alert-banner alert-${a.tipo==='success'?'success':a.tipo==='danger'?'danger':'warn'}">${a.msg}</div>`
+  ).join('');
 
   document.getElementById('dmetrics').innerHTML=`
-    <div class="mc ca"><div class="ml">Ingreso mensual</div>
-      <div class="mv" style="color:var(--accent);">${fmt(ingresoTotal)}</div>
-      <div class="ms">Salario + aportes del mes</div></div>
-    <div class="mc ${pg>80?'cam':'ca'}">
-      <div class="ml">Gastado este mes</div>
+    <div class="mc ca"><div class="ml">Ingreso mensual</div><div class="mv" style="color:var(--accent);">${fmt(ingresoTotal)}</div><div class="ms">Salario + aportes del mes</div></div>
+    <div class="mc ${pg>80?'cam':'ca'}"><div class="ml">Gastado este mes</div>
       <div class="mv" style="color:${pg>80?'var(--amber)':pg>60?'var(--blue)':'var(--text)'};">${fmt(tot)}</div>
-      <div class="ms ${pg>80?'dn':''}">${pg.toFixed(1)}% del ingreso · ${S.gastos.filter(g=>{const d=new Date(g.fecha);const n2=new Date();return d.getMonth()===n2.getMonth()&&d.getFullYear()===n2.getFullYear();}).length} movs.</div></div>
-    <div class="mc cb">
-      <div class="ml">Disponible</div>
+      <div class="ms ${pg>80?'dn':''}">${pg.toFixed(1)}% del ingreso</div></div>
+    <div class="mc cb"><div class="ml">Disponible</div>
       <div class="mv" style="color:${disp<0?'var(--red)':'var(--blue)'};">${fmt(disp)}</div>
       <div class="ms ${disp<0?'dn':'up'}">${disp<0?'⚠ Excedido':'✓ En control'}</div></div>
-    <div class="mc cp">
-      <div class="ml">Patrimonio pilares</div>
-      <div class="mv" style="color:var(--purple);">${fmt(ta)}</div>
-      <div class="ms">${S.activos.length} activos registrados</div></div>
-    <div class="mc cam">
-      <div class="ml">Presupuesto total</div>
-      <div class="mv" style="color:var(--amber);">${fmt(presTotal)}</div>
-      <div class="ms">Suma de todas las salidas fijas</div></div>
-    <div class="mc ${difPres<0?'cr2':'ca'}">
-      <div class="ml">Ingreso vs Presupuesto</div>
-      <div class="mv" style="color:${difPres<0?'var(--red)':'var(--accent)'};">${fmt(difPres)}</div>
-      <div class="ms ${difPres<0?'dn':'up'}">${difPres<0?'⚠ Presupuesto excede ingresos':'✓ '+difPct+'% del ingreso libre'}</div></div>`;
+    <div class="mc co"><div class="ml">Patrimonio neto</div>
+      <div class="mv" style="color:${patNeto<0?'var(--red)':'var(--orange)'};">${fmt(patNeto)}</div>
+      <div class="ms">${patNeto>=0?'Activos > Pasivos':'⚠ Pasivos > Activos'}</div></div>`;
 
   // KPI 70/20/10
   const nec70=S.ingreso*0.7,nonec20=S.ingreso*0.2,aho10=S.ingreso*0.1;
   const gastNec=gm('vivienda')+gm('alimentacion')+gm('transporte')+gm('salud');
   const gastNoNec=gm('entretenimiento')+gm('prestamos');
   const gastAho=gm('imprevistos')+gm('oxigeno')+gm('retiro')+gm('inversiones');
-  function hbarColor(val,limit){const p=val/limit*100;return p>100?'var(--red)':p>85?'var(--amber)':'var(--accent)';}
+  function hbarColor(v,l){const p=v/l*100;return p>100?'var(--red)':p>85?'var(--amber)':'var(--accent)';}
   function hbarData(label,gasto,limite,pTarget){
-    const pct=Math.min(gasto/limite*100,100);const col=hbarColor(gasto,limite);
-    return`<div class="hbar-wrap">
-      <div class="hbar-label"><span>${label} <span style="color:var(--text3);">(obj. ${pTarget}%)</span></span>
-        <span style="color:${hbarColor(gasto,limite)};">${fmt(gasto)} / ${fmt(limite)}</span></div>
-      <div class="hbar-track">
-        <div class="hbar-fill" style="width:${pct.toFixed(1)}%;background:${col};"></div>
-        <div class="hbar-limit" style="left:100%;"></div>
-      </div>
-      <div class="hbar-sub">${pct.toFixed(1)}% utilizado · ${gasto>limite?'⚠ Excede límite':'Disponible: '+fmt(limite-gasto)}</div>
-    </div>`;
+    const pct=Math.min(gasto/limite*100,100),col=hbarColor(gasto,limite);
+    return`<div class="hbar-wrap"><div class="hbar-label"><span>${label} <span style="color:var(--text3);">(obj. ${pTarget}%)</span></span>
+      <span style="color:${col};">${fmt(gasto)} / ${fmt(limite)}</span></div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${pct.toFixed(1)}%;background:${col};"></div></div>
+      <div class="hbar-sub">${pct.toFixed(1)}% utilizado · ${gasto>limite?'⚠ Excede límite':'Disponible: '+fmt(limite-gasto)}</div></div>`;
   }
   document.getElementById('kpi7020').innerHTML=
     hbarData('Gastos necesarios',gastNec,nec70,70)+
-    hbarData('Gastos no necesarios',gastNoNec,nonec20,20)+
+    hbarData('No necesarios',gastNoNec,nonec20,20)+
     hbarData('Ahorro / Inversión',gastAho,aho10,10);
 
-  // KPI Categorías vs presupuesto
+  // Categorías vs presupuesto
   const catMap=[
     {label:'Vivienda',cat:'vivienda',catLabel:'Vivienda'},
     {label:'Alimentación',cat:'alimentacion',catLabel:'Alimentación'},
@@ -683,40 +801,27 @@ function rD(){
     {label:'Préstamos',cat:'prestamos',catLabel:'Préstamos'},
   ];
   document.getElementById('kpicats').innerHTML=catMap.map(({label,cat,catLabel})=>{
-    const gastado=gm(cat),presup=salPresupuestoCat(catLabel),pct=presup>0?Math.min(gastado/presup*100,100):0;
-    const col=pct>100?'var(--red)':pct>85?'var(--amber)':'var(--accent)';
-    return`<div class="hbar-wrap">
-      <div class="hbar-label"><span style="color:${CH[cat]};">● </span><span>${label}</span>
-        <span style="color:${col};font-size:11px;">${fmt(gastado)} / ${fmt(presup)}</span></div>
-      <div class="hbar-track">
-        <div class="hbar-fill" style="width:${pct.toFixed(1)}%;background:${col};"></div>
-      </div>
-      <div class="hbar-sub">${pct.toFixed(0)}% ${pct>100?'⚠ superado':pct>85?'⚡ cerca del límite':'del presupuesto'}</div>
-    </div>`;
+    const gastado=gm(cat),presup=salPresupuestoCat(catLabel),pct=presup>0?Math.min(gastado/presup*100,100):0,col=pct>100?'var(--red)':pct>85?'var(--amber)':'var(--accent)';
+    return`<div class="hbar-wrap"><div class="hbar-label"><span style="color:${CH[cat]};">● </span><span>${label}</span>
+      <span style="color:${col};font-size:11px;">${fmt(gastado)} / ${fmt(presup)}</span></div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${pct.toFixed(1)}%;background:${col};"></div></div>
+      <div class="hbar-sub">${pct.toFixed(0)}% ${pct>100?'⚠ superado':pct>85?'⚡ cerca del límite':'del presupuesto'}</div></div>`;
   }).join('');
 
   // Mini pilares
-  const ps=['imprevistos','oxigeno','retiro','inversiones'];
-  document.getElementById('dpilmini').innerHTML=ps.map(p=>{
+  document.getElementById('dpilmini').innerHTML=['imprevistos','oxigeno','retiro','inversiones'].map(p=>{
     const c=S.contrib[p],ga=gm(p),pct=c>0?Math.min(ga/c*100,100):0,col=CH[p];
-    return`<div style="margin-bottom:11px;">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;">
-        <span style="font-size:11px;font-weight:500;">${PN[p]}</span>
-        <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(ga)}</span>
-      </div>
+    return`<div style="margin-bottom:11px;"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;">
+      <span style="font-size:11px;font-weight:500;">${PN[p]}</span><span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(ga)}</span></div>
       <div class="pr"><div class="pf" style="width:${pct.toFixed(1)}%;background:${col};"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);">
-        <span>${pct.toFixed(0)}% · obj.${fmt(c)}/mes</span><span>Acum: ${fmt(S.acum[p])}</span>
-      </div>
-    </div>`;
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);"><span>${pct.toFixed(0)}% · obj.${fmt(c)}/mes</span><span>Acum: ${fmt(S.acum[p])}</span></div></div>`;
   }).join('');
 
   // Donut
   const cats=['vivienda','alimentacion','transporte','salud','entretenimiento','prestamos','imprevistos','oxigeno','retiro','inversiones'];
   const vals=cats.map(c=>gm(c)),cols=cats.map(c=>CH[c]);
-  const canvas=document.getElementById('chartD');
   if(CI){CI.destroy();CI=null;}
-  CI=new Chart(canvas,{type:'doughnut',data:{labels:cats.map(c=>CL[c]),datasets:[{data:vals,backgroundColor:cols,borderWidth:0,spacing:2}]},
+  CI=new Chart(document.getElementById('chartD'),{type:'doughnut',data:{labels:cats.map(c=>CL[c]),datasets:[{data:vals,backgroundColor:cols,borderWidth:0,spacing:2}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},
       tooltip:{backgroundColor:'#1c2535',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e8edf3',bodyColor:'#7a8a9e',
         callbacks:{label:ctx=>' '+fmt(ctx.raw)}}}}});
@@ -725,37 +830,29 @@ function rD(){
 }
 
 function rList(id,n){
-  const c=document.getElementById(id);
-  const items=[...S.gastos].slice(0,n);
+  const c=document.getElementById(id),items=[...S.gastos].slice(0,n);
   if(!items.length){c.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:12px;">Sin gastos registrados aún.</div>';return;}
   c.innerHTML=items.map(gH).join('');
 }
 function gH(g){const col=CH[g.cat]||'#94a3b8';return`<div class="li"><div class="ll"><div class="ln">${g.desc}</div><div class="lm">${g.sub||''} · ${g.fecha}</div></div><div class="lr"><span class="badge badge-${g.cat}">${CL[g.cat]||g.cat}</span><span class="lv" style="color:${col};">${fmt(g.monto)}</span><button class="bx" onclick="delG(${g.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`;}
 
 // ══════════════════════════════════════════════════════════
-// PILARES + CALCULADORA
+// PILARES
 // ══════════════════════════════════════════════════════════
 function rP(){
   const mt=metas();
   const descs={imprevistos:'Meta: 1 mes de gastos esenciales',oxigeno:'Meta: 6 meses de ingresos',retiro:'Meta: 10× ingreso anual',inversiones:'Meta: 5 años de aportes'};
   document.getElementById('pilaresfull').innerHTML=['imprevistos','oxigeno','retiro','inversiones'].map(p=>{
     const ac=S.acum[p],me=mt[p],pct=Math.min(ac/me*100,100),col=PC[p],dim=PD[p];
-    return`<div class="pc"><div class="pt2">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div class="pi-ico" style="background:${dim};color:${col};"><i class="fa-solid ${PI[p]}"></i></div>
-        <div><div class="pi-n">${PN[p]}</div><div class="pi-d">${descs[p]}</div></div>
-      </div>
-      <div style="text-align:right;"><div class="pa" style="color:${col};">${fmt(ac)}</div><div class="po">de ${fmt(me)}</div></div>
-    </div>
+    return`<div class="pc"><div class="pt2"><div style="display:flex;align-items:center;gap:10px;">
+      <div class="pi-ico" style="background:${dim};color:${col};"><i class="fa-solid ${PI[p]}"></i></div>
+      <div><div class="pi-n">${PN[p]}</div><div class="pi-d">${descs[p]}</div></div></div>
+      <div style="text-align:right;"><div class="pa" style="color:${col};">${fmt(ac)}</div><div class="po">de ${fmt(me)}</div></div></div>
     <div class="pr"><div class="pf" style="width:${pct.toFixed(2)}%;background:${col};"></div></div>
-    <div class="pstat"><span>${pct.toFixed(2)}% completado</span><span>Aporte: ${fmt(S.contrib[p])}/mes</span></div>
-    </div>`;
+    <div class="pstat"><span>${pct.toFixed(2)}% completado</span><span>Aporte: ${fmt(S.contrib[p])}/mes</span></div></div>`;
   }).join('');
-
-  // Calculadora interactiva por pilar
   const calcRows=['imprevistos','oxigeno','retiro','inversiones'].map(p=>{
     const ac=S.acum[p],me=mt[p],falta=Math.max(0,me-ac),contr=S.contrib[p];
-    const mesesFalta=contr>0?Math.ceil(falta/contr):null;
     return`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);padding:12px;margin-bottom:8px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
         <div style="width:26px;height:26px;border-radius:7px;background:${PD[p]};color:${PC[p]};display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="fa-solid ${PI[p]}"></i></div>
@@ -763,15 +860,10 @@ function rP(){
         <span style="font-size:10px;color:var(--text3);margin-left:auto;">Faltan: <strong style="color:var(--text);font-family:'JetBrains Mono',monospace;">${fmt(falta)}</strong></span>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:6px;">
-        <div class="fgrp"><div class="fl">Aporte mensual (COP)</div>
-          <input type="number" id="calc-${p}-aporte" value="${contr}" oninput="calcPilar('${p}')" style="font-size:12px;"/></div>
-        <div class="fgrp"><div class="fl">Meta (COP)</div>
-          <input type="number" id="calc-${p}-meta" value="${me}" oninput="calcPilar('${p}')" style="font-size:12px;"/></div>
-        <div class="fgrp"><div class="fl">Resultado</div>
-          <div id="calc-${p}-res" style="padding:7px 10px;background:var(--bg2);border-radius:6px;font-size:11px;color:var(--text2);border:1px solid var(--border);">—</div>
-        </div>
-      </div>
-    </div>`;
+        <div class="fgrp"><div class="fl">Aporte mensual</div><input type="number" id="calc-${p}-aporte" value="${contr}" oninput="calcPilar('${p}')"/></div>
+        <div class="fgrp"><div class="fl">Meta (COP)</div><input type="number" id="calc-${p}-meta" value="${me}" oninput="calcPilar('${p}')"/></div>
+        <div class="fgrp"><div class="fl">Resultado</div><div id="calc-${p}-res" style="padding:7px 10px;background:var(--bg2);border-radius:6px;font-size:11px;color:var(--text2);border:1px solid var(--border);">—</div></div>
+      </div></div>`;
   }).join('');
   document.getElementById('pilcalc').innerHTML=calcRows;
   ['imprevistos','oxigeno','retiro','inversiones'].forEach(p=>calcPilar(p));
@@ -780,134 +872,61 @@ function rP(){
 function calcPilar(p){
   const aporte=parseFloat(document.getElementById('calc-'+p+'-aporte')?.value)||0;
   const meta=parseFloat(document.getElementById('calc-'+p+'-meta')?.value)||0;
-  const acum=S.acum[p];
-  const falta=Math.max(0,meta-acum);
-  const res=document.getElementById('calc-'+p+'-res');
-  if(!res) return;
+  const falta=Math.max(0,meta-S.acum[p]),res=document.getElementById('calc-'+p+'-res');
+  if(!res)return;
   if(aporte<=0){res.innerHTML='<span style="color:var(--red);">Define un aporte mensual</span>';return;}
-  const meses=Math.ceil(falta/aporte);
-  const años=(meses/12).toFixed(1);
-  const colP=PC[p];
-  res.innerHTML=`<strong style="color:${colP};font-family:'JetBrains Mono',monospace;">${meses} meses</strong> <span style="color:var(--text3);">(${años} años)</span><br><span style="font-size:10px;">a ${fmt(aporte)}/mes</span>`;
-  // Update sidebar pilar card if aporte changed
-  if(aporte!==S.contrib[p]){
-    const card=document.querySelectorAll('.pc')[['imprevistos','oxigeno','retiro','inversiones'].indexOf(p)];
-    if(card){const st=card.querySelector('.pstat');if(st)st.children[1].textContent='Aporte: '+fmt(aporte)+'/mes (calc.)';}
-  }
+  const meses=Math.ceil(falta/aporte),años=(meses/12).toFixed(1);
+  res.innerHTML=`<strong style="color:${PC[p]};font-family:'JetBrains Mono',monospace;">${meses} meses</strong> <span style="color:var(--text3);">(${años} años)</span><br><span style="font-size:10px;">a ${fmt(aporte)}/mes</span>`;
 }
 
 // ══════════════════════════════════════════════════════════
-// ACTIVOS + RENDIMIENTOS
+// ACTIVOS
 // ══════════════════════════════════════════════════════════
 let rendFiltro='total';
 function rA(){
   const ps=['imprevistos','oxigeno','retiro','inversiones'];
-  // Rendimientos chart
-  const rendCtrl=document.getElementById('rendControls');
-  rendCtrl.innerHTML=[
-    {k:'total',l:'Total patrimonio'},
-    {k:'imprevistos',l:'Imprevistos'},
-    {k:'oxigeno',l:'Oxígeno'},
-    {k:'retiro',l:'Retiro'},
-    {k:'inversiones',l:'Inversiones'}
+  document.getElementById('rendControls').innerHTML=[
+    {k:'total',l:'Total patrimonio'},{k:'imprevistos',l:'Imprevistos'},
+    {k:'oxigeno',l:'Oxígeno'},{k:'retiro',l:'Retiro'},{k:'inversiones',l:'Inversiones'}
   ].map(({k,l})=>`<button class="rend-btn ${rendFiltro===k?'active':''}" onclick="setRendFiltro('${k}')">${l}</button>`).join('');
   buildRendChart();
-
-  // Activos por pilar
   document.getElementById('actgrid').innerHTML=ps.map(p=>{
     const acts=S.activos.filter(a=>a.pilar===p),tot=acts.reduce((s,a)=>s+a.valor,0),col=PC[p],dim=PD[p];
-    return`<div class="card">
-      <div class="ch">
-        <div style="display:flex;align-items:center;gap:7px;">
-          <div style="width:26px;height:26px;border-radius:7px;background:${dim};color:${col};display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="fa-solid ${PI[p]}"></i></div>
-          <div class="ct" style="color:${col};">${PN[p]}</div>
-        </div>
-        <div style="font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(tot)}</div>
-      </div>
+    return`<div class="card"><div class="ch">
+      <div style="display:flex;align-items:center;gap:7px;"><div style="width:26px;height:26px;border-radius:7px;background:${dim};color:${col};display:flex;align-items:center;justify-content:center;font-size:11px;"><i class="fa-solid ${PI[p]}"></i></div>
+      <div class="ct" style="color:${col};">${PN[p]}</div></div>
+      <div style="font-size:15px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(tot)}</div></div>
       ${acts.length===0?'<div style="color:var(--text3);font-size:11px;text-align:center;padding:8px 0;">Sin activos registrados.</div>':
         acts.map(a=>{const pctA=tot>0?(a.valor/tot*100).toFixed(1):0;
-          return`<div class="ar">
-            <div>
-              <div style="font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;">${a.tipo}</div>
-              <div style="font-size:12px;font-weight:500;">${a.nombre}</div>
-              ${a.nota?`<div style="font-size:10px;color:var(--text3);">${a.nota}</div>`:''}
-              ${a.rent?`<div style="font-size:10px;color:var(--accent);">↑ ${a.rent}% est. anual</div>`:''}
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;text-align:right;">
-              <div><div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(a.valor)}</div>
+          return`<div class="ar"><div><div style="font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;">${a.tipo}</div>
+            <div style="font-size:12px;font-weight:500;">${a.nombre}</div>
+            ${a.nota?`<div style="font-size:10px;color:var(--text3);">${a.nota}</div>`:''}
+            ${a.rent?`<div style="font-size:10px;color:var(--accent);">↑ ${a.rent}% est. anual</div>`:''}</div>
+            <div style="display:flex;align-items:center;gap:6px;text-align:right;"><div>
+              <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(a.valor)}</div>
               <div style="font-size:10px;color:var(--text3);">${pctA}%</div></div>
-              <button class="bx" onclick="delA(${a.id})"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-          </div>`;
-        }).join('')
-      }
+              <button class="bx" onclick="delA(${a.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`;
+        }).join('')}
     </div>`;
   }).join('');
 }
 
-function setRendFiltro(k){rendFiltro=k;document.querySelectorAll('.rend-btn').forEach(b=>{b.classList.toggle('active',b.textContent.trim()===({total:'Total patrimonio',imprevistos:'Imprevistos',oxigeno:'Oxígeno',retiro:'Retiro',inversiones:'Inversiones'}[k]||k));});buildRendChart();}
+function setRendFiltro(k){rendFiltro=k;document.querySelectorAll('.rend-btn').forEach(b=>{const lm={total:'Total patrimonio',imprevistos:'Imprevistos',oxigeno:'Oxígeno',retiro:'Retiro',inversiones:'Inversiones'};b.classList.toggle('active',b.textContent.trim()===lm[k]);});buildRendChart();}
 
 function buildRendChart(){
   const canvas=document.getElementById('chartRend');if(!canvas)return;
   if(CR){CR.destroy();CR=null;}
-
-  // Solo muestra el valor acumulado actual — sin proyección
-  let labels=[];
-  let datasets=[];
-
+  let labels=[],datasets=[];
   if(rendFiltro==='total'){
     const ps=['imprevistos','oxigeno','retiro','inversiones'];
-    const vals=ps.map(p=>S.activos.filter(a=>a.pilar===p).reduce((s,a)=>s+a.valor,0)||S.acum[p]||0);
     labels=ps.map(p=>PN[p]);
-    datasets=[{
-      label:'Valor acumulado',
-      data:vals,
-      backgroundColor:ps.map(p=>CH[p]+'bb'),
-      borderColor:ps.map(p=>CH[p]),
-      borderWidth:1,
-      borderRadius:6,
-      barThickness:36
-    }];
-  } else {
+    datasets=[{label:'Valor acumulado',data:ps.map(p=>S.activos.filter(a=>a.pilar===p).reduce((s,a)=>s+a.valor,0)||S.acum[p]||0),backgroundColor:ps.map(p=>CH[p]+'bb'),borderColor:ps.map(p=>CH[p]),borderWidth:1,borderRadius:6,barThickness:36}];
+  }else{
     const acts=S.activos.filter(a=>a.pilar===rendFiltro);
-    if(acts.length){
-      labels=acts.map(a=>a.nombre);
-      datasets=[{
-        label:'Valor acumulado',
-        data:acts.map(a=>a.valor),
-        backgroundColor:acts.map(()=>CH[rendFiltro]+'bb'),
-        borderColor:acts.map(()=>CH[rendFiltro]),
-        borderWidth:1,
-        borderRadius:6,
-        barThickness:36
-      }];
-    } else {
-      labels=[PN[rendFiltro]];
-      datasets=[{
-        label:'Valor acumulado',
-        data:[S.acum[rendFiltro]||0],
-        backgroundColor:[CH[rendFiltro]+'bb'],
-        borderColor:[CH[rendFiltro]],
-        borderWidth:1,
-        borderRadius:6,
-        barThickness:36
-      }];
-    }
+    labels=acts.length?acts.map(a=>a.nombre):[PN[rendFiltro]];
+    datasets=[{label:'Valor acumulado',data:acts.length?acts.map(a=>a.valor):[S.acum[rendFiltro]||0],backgroundColor:[CH[rendFiltro]+'bb'],borderColor:[CH[rendFiltro]],borderWidth:1,borderRadius:6,barThickness:36}];
   }
-
-  CR=new Chart(canvas,{
-    type:'bar',
-    data:{labels,datasets},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},
-        tooltip:{backgroundColor:'#1c2535',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e8edf3',bodyColor:'#7a8a9e',
-          callbacks:{label:ctx=>' '+fmt(Math.round(ctx.raw))}}},
-      scales:{
-        x:{ticks:{color:'#7a8a9e',font:{size:11}},grid:{display:false}},
-        y:{ticks:{color:'#445566',font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.04)'}}
-      }
-    }
-  });
+  CR=new Chart(canvas,{type:'bar',data:{labels,datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1c2535',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e8edf3',bodyColor:'#7a8a9e',callbacks:{label:ctx=>' '+fmt(Math.round(ctx.raw))}}},scales:{x:{ticks:{color:'#7a8a9e',font:{size:11}},grid:{display:false}},y:{ticks:{color:'#445566',font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.04)'}}}}}); 
 }
 
 function addActivo(){
@@ -915,14 +934,306 @@ function addActivo(){
   if(!nombre){sA(msg,'err','⚠ Nombre requerido');return;}if(!valor||valor<=0){sA(msg,'err','⚠ Valor inválido');return;}
   S.activos.push({id:nextId(),nombre,valor,pilar,tipo,rent:rent?parseFloat(rent):null,nota});
   S.acum[pilar]=S.activos.filter(a=>a.pilar===pilar).reduce((s,a)=>s+a.valor,0);
-  sv();
-  document.getElementById('an').value='';document.getElementById('av2').value='';document.getElementById('arp').value='';document.getElementById('anotaA').value='';
+  sv();document.getElementById('an').value='';document.getElementById('av2').value='';document.getElementById('arp').value='';document.getElementById('anotaA').value='';
   sA(msg,'ok','✓ Activo agregado');rA();
 }
 function delA(id){const a=S.activos.find(x=>x.id===id);S.activos=S.activos.filter(x=>x.id!==id);if(a)S.acum[a.pilar]=S.activos.filter(x=>x.pilar===a.pilar).reduce((s,x)=>s+x.valor,0);sv();rA();}
 
 // ══════════════════════════════════════════════════════════
-// REGISTRO / GASTOS
+// PATRIMONIO NETO
+// ══════════════════════════════════════════════════════════
+function rPat(){
+  const totAct=S.patActivos.reduce((s,a)=>s+a.valor,0);
+  const totPas=S.patPasivos.reduce((s,a)=>s+a.valor,0);
+  const neto=totAct-totPas;
+  const ratio=totAct>0?(totPas/totAct*100):0;
+  let semClass='sem-verde',semTxt='Sólido';
+  if(ratio>60){semClass='sem-rojo';semTxt='Riesgo alto';}
+  else if(ratio>30){semClass='sem-amarillo';semTxt='Moderado';}
+
+  document.getElementById('patMetrics').innerHTML=`
+    <div class="mc ca"><div class="ml">Total activos</div><div class="mv" style="color:var(--accent);">${fmt(totAct)}</div><div class="ms">${S.patActivos.length} bienes registrados</div></div>
+    <div class="mc cr2"><div class="ml">Total pasivos</div><div class="mv" style="color:var(--red);">${fmt(totPas)}</div><div class="ms">${S.patPasivos.length} deudas registradas</div></div>
+    <div class="mc ${neto>=0?'co':'cr2'}"><div class="ml">Patrimonio neto</div><div class="mv" style="color:${neto>=0?'var(--orange)':'var(--red)'};">${fmt(neto)}</div><div class="ms">${neto>=0?'✓ Activos > Pasivos':'⚠ Pasivos > Activos'}</div></div>
+    <div class="mc cam"><div class="ml">Ratio deuda / activos</div><div class="mv" style="color:var(--amber);">${ratio.toFixed(1)}%</div><div class="ms"><span class="sem ${semClass}">${semTxt}</span></div></div>`;
+
+  // Barra visual activos vs pasivos
+  const barActPct=totAct>0?Math.min(totAct/(totAct+totPas)*100,100):50;
+  document.getElementById('patActivosList').innerHTML=`
+    <div class="pat-bar" style="margin-bottom:12px;">
+      <div style="width:${barActPct.toFixed(1)}%;background:var(--accent);"></div>
+      <div style="width:${(100-barActPct).toFixed(1)}%;background:var(--red);"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:12px;">
+      <span style="color:var(--accent);">Activos ${barActPct.toFixed(1)}%</span>
+      <span style="color:var(--red);">Pasivos ${(100-barActPct).toFixed(1)}%</span>
+    </div>
+    ${S.patActivos.length===0?'<div style="font-size:11px;color:var(--text3);text-align:center;padding:8px 0;">Sin activos registrados.</div>':
+    S.patActivos.map(a=>`<div class="li"><div class="ll"><div class="ln">${a.nom}</div><div class="lm">${a.cat}</div></div>
+      <div class="lr"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent);">${fmt(a.valor)}</span>
+      <button class="bx" onclick="delPatActivo(${a.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`).join('')}`;
+
+  document.getElementById('patPasivosList').innerHTML=S.patPasivos.length===0?'<div style="font-size:11px;color:var(--text3);text-align:center;padding:8px 0;">Sin pasivos registrados.</div>':
+    S.patPasivos.map(a=>`<div class="li"><div class="ll"><div class="ln">${a.nom}</div><div class="lm">${a.cat}</div></div>
+      <div class="lr"><span style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--red);">${fmt(a.valor)}</span>
+      <button class="bx" onclick="delPatPasivo(${a.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`).join('');
+
+  // Historial chart
+  if(CPat){CPat.destroy();CPat=null;}
+  const hist=S.patHistorial.slice(-12);
+  if(hist.length>0){
+    CPat=new Chart(document.getElementById('chartPat'),{type:'line',data:{labels:hist.map(h=>h.fecha),datasets:[
+      {label:'Activos',data:hist.map(h=>h.activos),borderColor:'#4ade80',backgroundColor:'rgba(74,222,128,0.1)',tension:0.3,fill:true,borderWidth:2,pointRadius:3},
+      {label:'Pasivos',data:hist.map(h=>h.pasivos),borderColor:'#f87171',backgroundColor:'rgba(248,113,113,0.1)',tension:0.3,fill:true,borderWidth:2,pointRadius:3},
+      {label:'Patrimonio Neto',data:hist.map(h=>h.neto),borderColor:'#fb923c',backgroundColor:'rgba(251,146,60,0.05)',tension:0.3,fill:false,borderWidth:2,pointRadius:3,borderDash:[4,4]}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#7a8a9e',font:{size:10}}},tooltip:{backgroundColor:'#1c2535',titleColor:'#e8edf3',bodyColor:'#7a8a9e',callbacks:{label:ctx=>' '+fmt(Math.round(ctx.raw))}}},scales:{x:{ticks:{color:'#7a8a9e',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#445566',font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+  }
+}
+
+function showPatForm(tipo){document.getElementById('patActivoForm').style.display=tipo==='activo'?'block':'none';document.getElementById('patPasivoForm').style.display=tipo==='pasivo'?'block':'none';}
+function hidePatForm(tipo){document.getElementById(tipo==='activo'?'patActivoForm':'patPasivoForm').style.display='none';}
+function addPatActivo(){
+  const nom=document.getElementById('patActNom').value.trim(),valor=parseFloat(document.getElementById('patActVal').value)||0,cat=document.getElementById('patActCat').value;
+  if(!nom||valor<=0){alert('Completa nombre y valor.');return;}
+  S.patActivos.push({id:nextId(),nom,valor,cat});sv();
+  document.getElementById('patActNom').value='';document.getElementById('patActVal').value='';
+  hidePatForm('activo');rPat();
+}
+function addPatPasivo(){
+  const nom=document.getElementById('patPasNom').value.trim(),valor=parseFloat(document.getElementById('patPasVal').value)||0,cat=document.getElementById('patPasCat').value;
+  if(!nom||valor<=0){alert('Completa nombre y valor.');return;}
+  S.patPasivos.push({id:nextId(),nom,valor,cat});sv();
+  document.getElementById('patPasNom').value='';document.getElementById('patPasVal').value='';
+  hidePatForm('pasivo');rPat();
+}
+function delPatActivo(id){S.patActivos=S.patActivos.filter(a=>a.id!==id);sv();rPat();}
+function delPatPasivo(id){S.patPasivos=S.patPasivos.filter(a=>a.id!==id);sv();rPat();}
+function guardarSnapshotPat(){
+  const totAct=S.patActivos.reduce((s,a)=>s+a.valor,0);
+  const totPas=S.patPasivos.reduce((s,a)=>s+a.valor,0);
+  const mes=new Date();
+  const label=MESES[mes.getMonth()].substring(0,3)+' '+mes.getFullYear();
+  const existing=S.patHistorial.findIndex(h=>h.fecha===label);
+  if(existing>=0)S.patHistorial[existing]={fecha:label,activos:totAct,pasivos:totPas,neto:totAct-totPas};
+  else S.patHistorial.push({fecha:label,activos:totAct,pasivos:totPas,neto:totAct-totPas});
+  if(S.patHistorial.length>24)S.patHistorial=S.patHistorial.slice(-24);
+}
+
+// ══════════════════════════════════════════════════════════
+// SCORE APEX
+// ══════════════════════════════════════════════════════════
+function calcScore(){
+  let score=0,detalle=[];
+  const mt=metas();
+  // Pilar 1: imprevistos (25pts)
+  const p1=Math.min(S.acum.imprevistos/mt.imprevistos*25,25);
+  score+=p1;detalle.push({label:'Fondo imprevistos',pts:p1.toFixed(0),max:25,pct:S.acum.imprevistos/mt.imprevistos*100});
+  // Pilar 2: oxigeno (25pts)
+  const p2=Math.min(S.acum.oxigeno/mt.oxigeno*25,25);
+  score+=p2;detalle.push({label:'Reserva oxígeno',pts:p2.toFixed(0),max:25,pct:S.acum.oxigeno/mt.oxigeno*100});
+  // Pilar 3: retiro (25pts)
+  const p3=Math.min(S.acum.retiro/mt.retiro*25,25);
+  score+=p3;detalle.push({label:'Cuenta retiro',pts:p3.toFixed(0),max:25,pct:S.acum.retiro/mt.retiro*100});
+  // Pilar 4: inversiones (25pts)
+  const p4=Math.min(S.acum.inversiones/mt.inversiones*25,25);
+  score+=p4;detalle.push({label:'Cuenta inversiones',pts:p4.toFixed(0),max:25,pct:S.acum.inversiones/mt.inversiones*100});
+  return{score:Math.round(score),detalle};
+}
+
+// ══════════════════════════════════════════════════════════
+// LIBERTAD FINANCIERA
+// ══════════════════════════════════════════════════════════
+function rLibertad(){
+  const inflRef=getInflRef();
+  const gastoAnual=Object.keys(S.salidas).reduce((tot,cat)=>tot+S.salidas[cat].reduce((s,i)=>s+i.m,0),0)*12;
+  const tasaRetiro=0.04; // regla del 4%
+  const numeroDorado=gastoAnual/tasaRetiro;
+
+  document.getElementById('goldDisplay').innerHTML=`<div class="golden-display">
+    <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Tu Número Dorado — Capital necesario para vivir de tus inversiones</div>
+    <div class="golden-num">${fmt(Math.round(numeroDorado))}</div>
+    <div class="golden-lbl">Con gasto anual de ${fmt(Math.round(gastoAnual))} y regla del 4% de retiro seguro</div>
+    <div style="margin-top:12px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+      <div style="text-align:center;"><div style="font-size:10px;color:var(--text3);">Patrimonio pilares actual</div><div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--blue);">${fmt(Object.values(S.acum).reduce((a,b)=>a+b,0))}</div></div>
+      <div style="text-align:center;"><div style="font-size:10px;color:var(--text3);">Progreso hacia el Número Dorado</div><div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--teal);">${Math.min(Object.values(S.acum).reduce((a,b)=>a+b,0)/numeroDorado*100,100).toFixed(1)}%</div></div>
+      <div style="text-align:center;"><div style="font-size:10px;color:var(--text3);">Inflación de referencia</div><div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--amber);">${inflRef.toFixed(2)}%</div></div>
+    </div>
+  </div>`;
+
+  // Score
+  const {score,detalle}=calcScore();
+  let scoreColor='var(--red)',scoreLabel='Inicio',scoreMsg='Construye tus pilares base primero.';
+  if(score>=80){scoreColor='var(--accent)';scoreLabel='Excelente';scoreMsg='Disciplina financiera sólida. Optimiza rendimientos.';}
+  else if(score>=60){scoreColor='var(--teal)';scoreLabel='Bueno';scoreMsg='Buen avance. Enfócate en pilares rezagados.';}
+  else if(score>=40){scoreColor='var(--blue)';scoreLabel='En progreso';scoreMsg='Construyendo bases sólidas. Aumenta aportes mensuales.';}
+  else if(score>=20){scoreColor='var(--amber)';scoreLabel='Inicial';scoreMsg='Primeros pasos dados. Prioriza el fondo de imprevistos.';}
+
+  document.getElementById('scoreDisplay').innerHTML=`<div style="display:flex;align-items:center;gap:20px;">
+    <div class="score-ring">
+      <div class="score-num" style="color:${scoreColor};">${score}</div>
+      <div style="font-size:10px;color:var(--text3);">de 100</div>
+      <div style="font-size:12px;font-weight:700;color:${scoreColor};margin-top:4px;">${scoreLabel}</div>
+    </div>
+    <div style="flex:1;"><div style="font-size:12px;color:var(--text2);margin-bottom:10px;">${scoreMsg}</div>
+      <div class="pr" style="height:8px;"><div class="pf" style="width:${score}%;background:${scoreColor};"></div></div>
+    </div></div>`;
+
+  document.getElementById('scoreDetalle').innerHTML=detalle.map(d=>`<div class="hbar-wrap">
+    <div class="hbar-label"><span>${d.label}</span><span style="font-size:11px;">${d.pts}/${d.max} pts</span></div>
+    <div class="hbar-track"><div class="hbar-fill" style="width:${Math.min(d.pct,100).toFixed(1)}%;background:${d.pct>=100?'var(--accent)':d.pct>=50?'var(--blue)':'var(--amber)'};"></div></div></div>`).join('');
+
+  // Proyección libertad
+  const ahorro=Object.values(S.contrib).reduce((a,b)=>a+b,0);
+  const retorno=8,infRef2=inflRef;
+  const netoReal=retorno-infRef2;
+  const patrimonioAct=Object.values(S.acum).reduce((a,b)=>a+b,0);
+  let mesesLibertad=null;
+  if(ahorro>0&&netoReal>0){
+    const rm=Math.pow(1+netoReal/100,1/12)-1;
+    let pat=patrimonioAct,m=0;
+    while(pat<numeroDorado&&m<600){pat=pat*(1+rm)+ahorro;m++;}
+    if(m<600)mesesLibertad=m;
+  }
+
+  document.getElementById('libertadProj').innerHTML=`
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Número Dorado</div>
+      <div style="font-size:18px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--amber);">${fmt(Math.round(numeroDorado))}</div>
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">Aportes mensuales actuales</div>
+      <div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent);">${fmt(ahorro)}</div>
+    </div>
+    ${mesesLibertad?`<div style="background:var(--accentDim);border:1px solid rgba(74,222,128,0.2);border-radius:var(--rs);padding:12px;text-align:center;">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">A tu ritmo actual alcanzas la libertad en</div>
+      <div style="font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent);">${(mesesLibertad/12).toFixed(1)} años</div>
+      <div style="font-size:11px;color:var(--text3);">${mesesLibertad} meses · retorno neto ${(retorno-infRef2).toFixed(1)}%</div></div>`:
+    `<div style="background:var(--amberDim);border:1px solid rgba(251,191,36,0.2);border-radius:var(--rs);padding:12px;text-align:center;font-size:12px;color:var(--amber);">Define aportes y retorno para calcular el tiempo</div>`}`;
+
+  calcLibertad();
+}
+
+function calcLibertad(){
+  const ahorro=parseFloat(document.getElementById('simAhorro')?.value)||Object.values(S.contrib).reduce((a,b)=>a+b,0);
+  const retorno=parseFloat(document.getElementById('simRetorno')?.value)||8;
+  const inflacion=parseFloat(document.getElementById('simInflacion')?.value)||getInflRef();
+  const neto=(retorno-inflacion).toFixed(2);
+  const netoEl=document.getElementById('simNeto');if(netoEl)netoEl.value=neto+'%';
+
+  function fvAnual(ahMen,r,años){if(r<=0)return ahMen*12*años;const rm=Math.pow(1+r/100,1/12)-1;return ahMen*(Math.pow(1+rm,años*12)-1)/rm;}
+  const patrimonioAct=Object.values(S.acum).reduce((a,b)=>a+b,0);
+  const gastoAnual=Object.keys(S.salidas).reduce((tot,cat)=>tot+S.salidas[cat].reduce((s,i)=>s+i.m,0),0)*12;
+  const numeroDorado=gastoAnual/0.04;
+  const periodos=[{a:1,l:'1 año'},{a:5,l:'5 años'},{a:10,l:'10 años'},{a:15,l:'15 años'},{a:20,l:'20 años'},{a:30,l:'30 años'}];
+
+  const el=document.getElementById('libertadTable');if(!el)return;
+  el.innerHTML=`<table class="proj-table"><thead><tr><th>Período</th><th>Sin interés</th><th>Retorno ${retorno}%</th><th>Retorno neto ${neto}%</th><th>vs Número Dorado</th></tr></thead>
+    <tbody>${periodos.map(({a,l})=>{
+      const sinInt=patrimonioAct+ahorro*12*a;
+      const conRet=patrimonioAct*Math.pow(1+retorno/100,a)+fvAnual(ahorro,retorno,a);
+      const conNeto=patrimonioAct*Math.pow(1+parseFloat(neto)/100,a)+fvAnual(ahorro,parseFloat(neto),a);
+      const pctDorado=Math.min(conNeto/numeroDorado*100,100);
+      return`<tr><td><strong style="color:var(--text);">${l}</strong></td>
+        <td class="mono">${fmt(Math.round(sinInt))}</td>
+        <td class="mono pos">${fmt(Math.round(conRet))}</td>
+        <td class="mono" style="color:var(--teal);">${fmt(Math.round(conNeto))}</td>
+        <td><div style="display:flex;align-items:center;gap:6px;"><div class="hbar-track" style="width:80px;"><div class="hbar-fill" style="width:${pctDorado.toFixed(1)}%;background:${pctDorado>=100?'var(--accent)':pctDorado>=50?'var(--blue)':'var(--amber)'};"></div></div><span style="font-size:10px;color:var(--text3);">${pctDorado.toFixed(0)}%</span></div></td></tr>`;
+    }).join('')}</tbody></table>`;
+
+  // Chart proyección
+  if(CLib){CLib.destroy();CLib=null;}
+  const labels=[];const dataConservador=[],dataModerado=[],dataAgresivo=[];
+  for(let a=0;a<=25;a++){
+    labels.push(a===0?'Hoy':a+'a');
+    const rCons=Math.max(parseFloat(neto)-2,0);
+    const rMod=parseFloat(neto);
+    const rAgr=parseFloat(neto)+2;
+    dataConservador.push(Math.round(patrimonioAct*Math.pow(1+rCons/100,a)+fvAnual(ahorro,rCons,a)));
+    dataModerado.push(Math.round(patrimonioAct*Math.pow(1+rMod/100,a)+fvAnual(ahorro,rMod,a)));
+    dataAgresivo.push(Math.round(patrimonioAct*Math.pow(1+rAgr/100,a)+fvAnual(ahorro,rAgr,a)));
+  }
+  const canvas=document.getElementById('chartLibertad');if(!canvas)return;
+  CLib=new Chart(canvas,{type:'line',data:{labels,datasets:[
+    {label:'Conservador',data:dataConservador,borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,0.05)',tension:0.3,fill:true,borderWidth:2,pointRadius:0},
+    {label:'Moderado',data:dataModerado,borderColor:'#4ade80',backgroundColor:'rgba(74,222,128,0.08)',tension:0.3,fill:true,borderWidth:2,pointRadius:0},
+    {label:'Agresivo',data:dataAgresivo,borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,0.05)',tension:0.3,fill:true,borderWidth:2,pointRadius:0},
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#7a8a9e',font:{size:10}}},tooltip:{backgroundColor:'#1c2535',titleColor:'#e8edf3',bodyColor:'#7a8a9e',callbacks:{label:ctx=>' '+fmt(Math.round(ctx.raw))}}},
+    scales:{x:{ticks:{color:'#7a8a9e',font:{size:10}},grid:{display:false}},y:{ticks:{color:'#445566',font:{size:10},callback:v=>fmt(v)},grid:{color:'rgba(255,255,255,0.04)'}}}}}); 
+}
+
+// ══════════════════════════════════════════════════════════
+// DEUDAS
+// ══════════════════════════════════════════════════════════
+function rDeudas(){
+  const deudas=S.deudas||[];
+  const totSaldo=deudas.reduce((s,d)=>s+d.saldo,0);
+  const totCuota=deudas.reduce((s,d)=>s+d.cuota,0);
+  const tasaProm=deudas.length?deudas.reduce((s,d)=>s+d.tasa,0)/deudas.length:0;
+
+  document.getElementById('deudaMetrics').innerHTML=`
+    <div class="mc cr2"><div class="ml">Deuda total</div><div class="mv" style="color:var(--red);">${fmt(totSaldo)}</div><div class="ms">${deudas.length} deudas registradas</div></div>
+    <div class="mc cam"><div class="ml">Cuotas mensuales</div><div class="mv" style="color:var(--amber);">${fmt(totCuota)}</div><div class="ms">${(totCuota/S.ingreso*100).toFixed(1)}% del ingreso</div></div>
+    <div class="mc cb"><div class="ml">Tasa promedio</div><div class="mv" style="color:var(--blue);">${tasaProm.toFixed(2)}%</div><div class="ms">mensual</div></div>
+    <div class="mc ca"><div class="ml">Carga deuda/ingreso</div><div class="mv" style="color:${totCuota/S.ingreso>0.3?'var(--red)':totCuota/S.ingreso>0.2?'var(--amber)':'var(--accent)'};">${(totCuota/S.ingreso*100).toFixed(1)}%</div><div class="ms">${totCuota/S.ingreso>0.3?'⚠ Alta':'✓ Manejable'}</div></div>`;
+
+  // Lista de deudas
+  document.getElementById('deudasList').innerHTML=deudas.length===0?'<div style="text-align:center;padding:20px;color:var(--text3);font-size:12px;">Sin deudas registradas.</div>':
+    deudas.map(d=>{
+      const mesesRestantes=d.saldo>0&&d.cuota>d.saldo*d.tasa/100?Math.ceil(-Math.log(1-(d.saldo*d.tasa/100/d.cuota))/Math.log(1+d.tasa/100)):null;
+      return`<div class="deuda-card"><div class="deuda-header">
+        <div><div class="deuda-name">${d.nom}</div><div class="deuda-meta">Tasa ${d.tasa}% mensual · Cuota ${fmt(d.cuota)}</div></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="text-align:right;"><div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--red);">${fmt(d.saldo)}</div>
+          ${mesesRestantes?`<div style="font-size:10px;color:var(--text3);">${mesesRestantes} meses restantes</div>`:''}
+          </div>
+          <button class="bx" onclick="delDeuda(${d.id})"><i class="fa-solid fa-xmark"></i></button>
+        </div></div>
+        <div class="pr"><div class="pf" style="width:${Math.max(0,100-d.saldo/d.saldoIni*100).toFixed(1)}%;background:var(--accent);"></div></div>
+      </div>`;
+    }).join('');
+
+  // Estrategias
+  if(deudas.length>0){
+    const cuotaExtra=100000;
+    const avalancha=[...deudas].sort((a,b)=>b.tasa-a.tasa);
+    const bolaNieve=[...deudas].sort((a,b)=>a.saldo-b.saldo);
+    function simDeuda(listaOrden,extra){
+      let meses=0,intTotal=0,deudas2=listaOrden.map(d=>({...d,sal:d.saldo}));
+      while(deudas2.some(d=>d.sal>0)&&meses<600){
+        meses++;let extraDisp=extra;
+        for(let d of deudas2){if(d.sal<=0)continue;const int=d.sal*d.tasa/100;intTotal+=int;let pago=d.cuota;if(extraDisp>0){pago+=extraDisp;extraDisp=0;}d.sal=Math.max(0,d.sal+int-pago);if(d.sal<100)d.sal=0;}
+        if(extraDisp>0){for(let d of deudas2){if(d.sal<=0)continue;const int=d.sal*d.tasa/100;intTotal+=int;d.sal=Math.max(0,d.sal+int-extraDisp);break;}}
+      }
+      return{meses,intTotal};
+    }
+    const rAval=simDeuda(avalancha,cuotaExtra);
+    const rBola=simDeuda(bolaNieve,cuotaExtra);
+    document.getElementById('avalanchaResult').innerHTML=`
+      <div style="font-size:11px;color:var(--text2);margin-bottom:8px;">Paga primero la deuda con mayor tasa (${avalancha[0]?.nom})</div>
+      <div style="margin-bottom:8px;"><div style="font-size:10px;color:var(--text3);">Tiempo libre de deudas</div><div style="font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--red);">${(rAval.meses/12).toFixed(1)} años</div><div style="font-size:10px;color:var(--text3);">${rAval.meses} meses</div></div>
+      <div><div style="font-size:10px;color:var(--text3);">Intereses totales pagados</div><div style="font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--amber);">${fmt(Math.round(rAval.intTotal))}</div></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;">Con cuota extra de ${fmt(cuotaExtra)}/mes</div>`;
+    document.getElementById('bolaNieveResult').innerHTML=`
+      <div style="font-size:11px;color:var(--text2);margin-bottom:8px;">Paga primero la deuda con menor saldo (${bolaNieve[0]?.nom})</div>
+      <div style="margin-bottom:8px;"><div style="font-size:10px;color:var(--text3);">Tiempo libre de deudas</div><div style="font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--blue);">${(rBola.meses/12).toFixed(1)} años</div><div style="font-size:10px;color:var(--text3);">${rBola.meses} meses</div></div>
+      <div><div style="font-size:10px;color:var(--text3);">Intereses totales pagados</div><div style="font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--amber);">${fmt(Math.round(rBola.intTotal))}</div></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;">Con cuota extra de ${fmt(cuotaExtra)}/mes</div>`;
+  }else{
+    document.getElementById('avalanchaResult').innerHTML=document.getElementById('bolaNieveResult').innerHTML='<div style="text-align:center;padding:16px;color:var(--text3);font-size:11px;">Registra deudas para ver el análisis</div>';
+  }
+}
+
+function addDeuda(){
+  const nom=document.getElementById('dNom').value.trim(),saldo=parseFloat(document.getElementById('dSaldo').value)||0,tasa=parseFloat(document.getElementById('dTasa').value)||0,cuota=parseFloat(document.getElementById('dCuota').value)||0,msg=document.getElementById('deudaMsg');
+  if(!nom||saldo<=0){sA(msg,'err','⚠ Completa nombre y saldo');return;}
+  S.deudas.push({id:nextId(),nom,saldo,saldoIni:saldo,tasa,cuota});sv();
+  document.getElementById('dNom').value='';document.getElementById('dSaldo').value='';document.getElementById('dTasa').value='';document.getElementById('dCuota').value='';
+  sA(msg,'ok','✓ Deuda registrada');rDeudas();
+}
+function delDeuda(id){S.deudas=S.deudas.filter(d=>d.id!==id);sv();rDeudas();}
+
+// ══════════════════════════════════════════════════════════
+// GASTOS / HISTORIAL
 // ══════════════════════════════════════════════════════════
 function addGasto(){
   const desc=document.getElementById('idesc').value.trim(),monto=parseFloat(document.getElementById('imonto').value),fecha=document.getElementById('ifecha').value,cat=document.getElementById('icat').value,sub=document.getElementById('isub').value.trim(),nota=document.getElementById('inota').value.trim(),msg=document.getElementById('gmsg');
@@ -933,10 +1244,6 @@ function addGasto(){
 }
 function delG(id){S.gastos=S.gastos.filter(g=>g.id!==id);sv();renderHist();rU8();rD();}
 function rU8(){rList('ult8',8);}
-
-// ══════════════════════════════════════════════════════════
-// HISTORIAL
-// ══════════════════════════════════════════════════════════
 function renderHist(){
   const fc=document.getElementById('fcat')?.value||'todos',fm=document.getElementById('fmes')?.value||'todos';
   let lista=[...S.gastos];
@@ -949,123 +1256,79 @@ function renderHist(){
 }
 
 // ══════════════════════════════════════════════════════════
-// PRESUPUESTO BASE
+// PRESUPUESTO
 // ══════════════════════════════════════════════════════════
 function rPres(){
   document.getElementById('ingBase').textContent=fmt(S.ingreso);
-  // Ingresos
   const extras=S.otrosIngresos.map(o=>`<div class="li"><div class="ll"><div class="ln">${o.desc}</div><div class="lm">${o.frec}${o.fecha?' · '+o.fecha:''}</div></div><div class="lr"><span class="lv" style="color:var(--amber);">${fmt(o.valor)}</span><span style="font-size:10px;color:var(--text3);">${o.frec==='mensual'?'suma al mes':o.frec}</span></div></div>`).join('');
   document.getElementById('tblingresos').innerHTML=`
     <div class="li"><div class="ll"><div class="ln">Salario básico</div><div class="lm">12× al año · día ${S.ingFechaDia||25}</div></div><div class="lr"><span class="lv" style="color:var(--accent);">${fmt(S.ingreso)}</span></div></div>
-    ${extras}
-    <div class="li"><div style="font-weight:600;">Total mensual base</div><div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);">${fmt(S.ingreso)}</div></div>`;
-
-  // Salidas editables
+    ${extras}<div class="li"><div style="font-weight:600;">Total mensual base</div><div style="font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);">${fmt(S.ingreso)}</div></div>`;
   const cats=Object.keys(S.salidas);
   const acCols={'Ahorro / Inversión':'var(--accent)','Vivienda':'var(--text2)','Alimentación':'var(--teal)','Transporte':'var(--blue)','Salud':'var(--red)','Entretenimiento':'var(--purple)','Préstamos':'var(--amber)'};
   document.getElementById('tblsalidas').innerHTML=cats.map(cat=>{
     const items=S.salidas[cat],tot=items.reduce((s,i)=>s+i.m,0),col=acCols[cat]||'var(--text2)';
-    return`<div class="cc" style="margin-bottom:10px;">
-      <div class="cch">
-        <div class="ccn" style="color:${col};">${cat}</div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="cct" style="color:${col};">${fmt(tot)}</div>
-          <button class="btn ba" style="font-size:10px;padding:3px 8px;" onclick="showAddSalida('${cat}')"><i class="fa-solid fa-plus"></i> Agregar</button>
-        </div>
-      </div>
-      ${items.map(i=>`
-        <div class="cr" id="srow-${i.id}">
-          <span style="flex:1;">${i.i} <span style="font-size:9px;color:var(--text3);">${i.t}</span></span>
-          <span class="crv">${fmt(i.m)}</span>
-          <button class="be" style="margin-left:6px;" onclick="editSalida(${i.id},'${cat}')"><i class="fa-solid fa-pen"></i></button>
-          <button class="bx" onclick="delSalida(${i.id},'${cat}')"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div id="editrow-${i.id}" style="display:none;" class="edit-row">
-          <div class="fg3">
-            <div class="fgrp"><div class="fl">Nombre</div><input type="text" id="es-nom-${i.id}" value="${i.i}"/></div>
-            <div class="fgrp"><div class="fl">Valor (COP)</div><input type="number" id="es-val-${i.id}" value="${i.m}"/></div>
-            <div class="fgrp"><div class="fl">Tipo</div>
-              <select id="es-tip-${i.id}">${TIPOS.map(t=>`<option ${t===i.t?'selected':''}>${t}</option>`).join('')}</select>
-            </div>
-          </div>
+    return`<div class="cc" style="margin-bottom:10px;"><div class="cch"><div class="ccn" style="color:${col};">${cat}</div>
+      <div style="display:flex;align-items:center;gap:8px;"><div class="cct" style="color:${col};">${fmt(tot)}</div>
+      <button class="btn ba" style="font-size:10px;padding:3px 8px;" onclick="showAddSalida('${cat}')"><i class="fa-solid fa-plus"></i> Agregar</button></div></div>
+      ${items.map(i=>`<div class="cr" id="srow-${i.id}"><span style="flex:1;">${i.i} <span style="font-size:9px;color:var(--text3);">${i.t}</span></span>
+        <span class="crv">${fmt(i.m)}</span>
+        <button class="be" style="margin-left:6px;" onclick="editSalida(${i.id},'${cat}')"><i class="fa-solid fa-pen"></i></button>
+        <button class="bx" onclick="delSalida(${i.id},'${cat}')"><i class="fa-solid fa-xmark"></i></button></div>
+        <div id="editrow-${i.id}" style="display:none;" class="edit-row"><div class="fg3">
+          <div class="fgrp"><div class="fl">Nombre</div><input type="text" id="es-nom-${i.id}" value="${i.i}"/></div>
+          <div class="fgrp"><div class="fl">Valor (COP)</div><input type="number" id="es-val-${i.id}" value="${i.m}"/></div>
+          <div class="fgrp"><div class="fl">Tipo</div><select id="es-tip-${i.id}">${TIPOS.map(t=>`<option ${t===i.t?'selected':''}>${t}</option>`).join('')}</select></div></div>
           <div style="display:flex;gap:6px;margin-top:6px;">
             <button class="btn ba" style="font-size:11px;padding:4px 10px;" onclick="saveSalida(${i.id},'${cat}')">Guardar</button>
-            <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="cancelEdit(${i.id})">Cancelar</button>
-          </div>
-        </div>`).join('')}
+            <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="cancelEdit(${i.id})">Cancelar</button></div></div>`).join('')}
       <div id="addsalida-${cat.replace(/[ /]/g,'-')}" style="display:none;" class="edit-row">
         <div style="font-size:11px;font-weight:600;color:var(--accent);margin-bottom:8px;"><i class="fa-solid fa-plus"></i> Nueva partida en ${cat}</div>
         <div class="fg3">
           <div class="fgrp"><div class="fl">Nombre</div><input type="text" id="ns-nom-${cat.replace(/[ /]/g,'-')}" placeholder="Nueva partida"/></div>
           <div class="fgrp"><div class="fl">Valor (COP)</div><input type="number" id="ns-val-${cat.replace(/[ /]/g,'-')}" placeholder="0"/></div>
-          <div class="fgrp"><div class="fl">Tipo</div>
-            <select id="ns-tip-${cat.replace(/[ /]/g,'-')}">${TIPOS.map(t=>`<option>${t}</option>`).join('')}</select>
-          </div>
-        </div>
+          <div class="fgrp"><div class="fl">Tipo</div><select id="ns-tip-${cat.replace(/[ /]/g,'-')}">${TIPOS.map(t=>`<option>${t}</option>`).join('')}</select></div></div>
         <div style="display:flex;gap:6px;margin-top:6px;">
           <button class="btn ba" style="font-size:11px;padding:4px 10px;" onclick="addSalida('${cat}')">Agregar</button>
-          <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="hideAddSalida('${cat}')">Cancelar</button>
-        </div>
-      </div>
-    </div>`;
+          <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="hideAddSalida('${cat}')">Cancelar</button></div></div></div>`;
   }).join('');
-
-  // Proyección
   document.getElementById('pAhorro').value=document.getElementById('pAhorro').value||Math.round(S.ingreso*0.1);
   calcProj();
 }
 
-function showAddSalida(cat){const k=cat.replace(/[ /]/g,'-');document.getElementById('addsalida-'+k).style.display='block';}
-function hideAddSalida(cat){const k=cat.replace(/[ /]/g,'-');document.getElementById('addsalida-'+k).style.display='none';}
+function showAddSalida(cat){document.getElementById('addsalida-'+cat.replace(/[ /]/g,'-')).style.display='block';}
+function hideAddSalida(cat){document.getElementById('addsalida-'+cat.replace(/[ /]/g,'-')).style.display='none';}
 function addSalida(cat){
-  const k=cat.replace(/[ /]/g,'-');
-  const nom=document.getElementById('ns-nom-'+k).value.trim();
-  const val=parseFloat(document.getElementById('ns-val-'+k).value)||0;
-  const tip=document.getElementById('ns-tip-'+k).value;
+  const k=cat.replace(/[ /]/g,'-'),nom=document.getElementById('ns-nom-'+k).value.trim(),val=parseFloat(document.getElementById('ns-val-'+k).value)||0,tip=document.getElementById('ns-tip-'+k).value;
   if(!nom||val<=0){alert('Completa nombre y valor.');return;}
-  S.salidas[cat].push({id:nextId(),i:nom,t:tip,m:val});
-  sv();rPres();
+  S.salidas[cat].push({id:nextId(),i:nom,t:tip,m:val});sv();rPres();
 }
-function editSalida(id,cat){
-  document.querySelectorAll('[id^="editrow-"]').forEach(el=>el.style.display='none');
-  document.getElementById('editrow-'+id).style.display='block';
-}
+function editSalida(id,cat){document.querySelectorAll('[id^="editrow-"]').forEach(el=>el.style.display='none');document.getElementById('editrow-'+id).style.display='block';}
 function cancelEdit(id){document.getElementById('editrow-'+id).style.display='none';}
 function saveSalida(id,cat){
-  const nom=document.getElementById('es-nom-'+id).value.trim();
-  const val=parseFloat(document.getElementById('es-val-'+id).value)||0;
-  const tip=document.getElementById('es-tip-'+id).value;
+  const nom=document.getElementById('es-nom-'+id).value.trim(),val=parseFloat(document.getElementById('es-val-'+id).value)||0,tip=document.getElementById('es-tip-'+id).value;
   const idx=S.salidas[cat].findIndex(i=>i.id===id);
-  if(idx>=0){S.salidas[cat][idx]={id,i:nom,t:tip,m:val};}
-  sv();rPres();
+  if(idx>=0)S.salidas[cat][idx]={id,i:nom,t:tip,m:val};sv();rPres();
 }
-function delSalida(id,cat){
-  S.salidas[cat]=S.salidas[cat].filter(i=>i.id!==id);sv();rPres();
-}
+function delSalida(id,cat){S.salidas[cat]=S.salidas[cat].filter(i=>i.id!==id);sv();rPres();}
 
 function calcProj(){
   const ahorro=parseFloat(document.getElementById('pAhorro')?.value)||S.ingreso*0.1;
   const retorno=parseFloat(document.getElementById('pRetorno')?.value)||8;
-  const inflacion=parseFloat(document.getElementById('pInflacion')?.value)||6;
+  const inflacion=parseFloat(document.getElementById('pInflacion')?.value)||getInflRef();
   const neto=(retorno-inflacion).toFixed(2);
   const netoEl=document.getElementById('pNeto');if(netoEl)netoEl.value=neto+'%';
-
-  function fvAnual(ahMen,r,años){if(r===0)return ahMen*12*años;const rm=Math.pow(1+r/100,1/12)-1;return ahMen*(Math.pow(1+rm,años*12)-1)/rm;}
+  function fvAnual(ahMen,r,años){if(r<=0)return ahMen*12*años;const rm=Math.pow(1+r/100,1/12)-1;return ahMen*(Math.pow(1+rm,años*12)-1)/rm;}
   const periodos=[{a:1,l:'1 año'},{a:5,l:'5 años'},{a:10,l:'10 años'},{a:20,l:'20 años'},{a:30,l:'30 años'}];
-
   const el=document.getElementById('projresult');if(!el)return;
-  el.innerHTML=`<table class="proj-table">
-    <thead><tr><th>Período</th><th>Sin interés</th><th>Con retorno (${retorno}%)</th><th>Retorno neto (${neto}%)</th></tr></thead>
+  el.innerHTML=`<table class="proj-table"><thead><tr><th>Período</th><th>Sin interés</th><th>Con retorno (${retorno}%)</th><th>Retorno neto (${neto}%)</th></tr></thead>
     <tbody>${periodos.map(({a,l})=>`<tr>
       <td><strong style="color:var(--text);">${l}</strong></td>
       <td class="mono">${fmt(Math.round(ahorro*12*a))}</td>
       <td class="mono pos">${fmt(Math.round(fvAnual(ahorro,retorno,a)))}</td>
-      <td class="mono" style="color:var(--teal);">${fmt(Math.round(fvAnual(ahorro,parseFloat(neto),a)))}</td>
-    </tr>`).join('')}</tbody>
-  </table>
+      <td class="mono" style="color:var(--teal);">${fmt(Math.round(fvAnual(ahorro,parseFloat(neto),a)))}</td></tr>`).join('')}</tbody></table>
   <div style="margin-top:10px;padding:10px;background:var(--bg2);border-radius:6px;font-size:11px;color:var(--text2);border:1px solid var(--border);">
-    Ahorrando <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;">${fmt(ahorro)}</span>/mes con retorno neto del <strong style="color:var(--teal);">${neto}%</strong> anual.
-  </div>`;
+    Ahorrando <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;">${fmt(ahorro)}</span>/mes con retorno neto del <strong style="color:var(--teal);">${neto}%</strong> anual. Inflación de referencia Colombia: <strong style="color:var(--amber);">${getInflRef().toFixed(2)}%</strong></div>`;
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1074,19 +1337,14 @@ function calcProj(){
 function renderOtrosIngresos(){
   const c=document.getElementById('otrosIngresos');if(!c)return;
   if(!S.otrosIngresos.length){c.innerHTML='<div style="font-size:11px;color:var(--text3);padding:6px 0;">Sin ingresos adicionales registrados.</div>';return;}
-  c.innerHTML=S.otrosIngresos.map(o=>`
-    <div class="li">
-      <div class="ll"><div class="ln">${o.desc}</div><div class="lm">${o.frec}${o.fecha?' · Fecha: '+o.fecha:''} ${o.frec!=='mensual'?'— no suma al ingreso mensual':''}</div></div>
-      <div class="lr"><span class="lv" style="color:var(--amber);">${fmt(o.valor)}</span>
-        <button class="bx" onclick="delOtroIngreso(${o.id})"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-    </div>`).join('');
+  c.innerHTML=S.otrosIngresos.map(o=>`<div class="li"><div class="ll"><div class="ln">${o.desc}</div><div class="lm">${o.frec}${o.fecha?' · Fecha: '+o.fecha:''} ${o.frec!=='mensual'?'— no suma al ingreso mensual':''}</div></div>
+    <div class="lr"><span class="lv" style="color:var(--amber);">${fmt(o.valor)}</span>
+    <button class="bx" onclick="delOtroIngreso(${o.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`).join('');
 }
 function addOtroIngreso(){
   const desc=document.getElementById('oi-desc').value.trim(),valor=parseFloat(document.getElementById('oi-valor').value)||0,frec=document.getElementById('oi-frec').value,fecha=document.getElementById('oi-fecha').value;
   if(!desc||valor<=0){sA(document.getElementById('cfgmsg'),'err','⚠ Completa descripción y valor');return;}
-  S.otrosIngresos.push({id:nextId(),desc,valor,frec,fecha});
-  sv();
+  S.otrosIngresos.push({id:nextId(),desc,valor,frec,fecha});sv();
   document.getElementById('oi-desc').value='';document.getElementById('oi-valor').value='';document.getElementById('oi-fecha').value='';
   renderOtrosIngresos();
 }
@@ -1106,6 +1364,10 @@ function lCfg(){
   document.getElementById('caox').value=S.acum.oxigeno;
   document.getElementById('caret').value=S.acum.retiro;
   document.getElementById('cainv').value=S.acum.inversiones;
+  // IPC
+  const ipc=S.ipc||DEF.ipc;
+  [2020,2021,2022,2023,2024,2025,2026].forEach(y=>{const el=document.getElementById('inf'+y);if(el)el.value=ipc[y]||DEF.ipc[y];});
+  const ref=getInflRef();const refEl=document.getElementById('infRef');if(refEl)refEl.value=ref.toFixed(2)+'%';
   renderOtrosIngresos();
 }
 function saveConfig(){
@@ -1114,29 +1376,39 @@ function saveConfig(){
   S.ingFechaDia=parseInt(document.getElementById('cingFecha').value)||25;
   S.contrib={imprevistos:g('cimp'),oxigeno:g('cox'),retiro:g('cret'),inversiones:g('cinv')};
   S.acum={imprevistos:g('caimp'),oxigeno:g('caox'),retiro:g('caret'),inversiones:g('cainv')};
-  sv();sA(document.getElementById('cfgmsg'),'ok','✓ Configuración guardada');
+  S.ipc={};
+  [2020,2021,2022,2023,2024,2025,2026].forEach(y=>{S.ipc[y]=parseFloat(document.getElementById('inf'+y)?.value)||DEF.ipc[y];});
+  guardarSnapshotPat();
+  sv();
+  // Actualizar inflación en calculadoras
+  const inflRef=getInflRef();
+  const refEl=document.getElementById('infRef');if(refEl)refEl.value=inflRef.toFixed(2)+'%';
+  const pInf=document.getElementById('pInflacion');if(pInf)pInf.value=inflRef.toFixed(2);
+  const sInf=document.getElementById('simInflacion');if(sInf)sInf.value=inflRef.toFixed(2);
+  sA(document.getElementById('cfgmsg'),'ok','✓ Configuración guardada y snapshot de patrimonio registrado');
 }
 
 // ══════════════════════════════════════════════════════════
 // UTILS
 // ══════════════════════════════════════════════════════════
-function sA(el,type,msg){if(!el)return;el.className='al al-'+type+' show';el.textContent=msg;setTimeout(()=>{el.className='al';el.textContent='';},2500);}
+function sA(el,type,msg){if(!el)return;el.className='al al-'+type+' show';el.textContent=msg;setTimeout(()=>{el.className='';el.textContent='';},2500);}
 function exportarCSV(){
   const rows=[['ID','Descripcion','Monto','Fecha','Categoria','Subcategoria','Nota']];
   S.gastos.forEach(g=>rows.push([g.id,g.desc,g.monto,g.fecha,CL[g.cat]||g.cat,g.sub||'',g.nota||'']));
   const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='vortex_froilan.csv';a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='apex_froilan.csv';a.click();
 }
 
 // ══════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════
 ld();
-// Apply saved name
 document.getElementById('uname-display').textContent=S.nombre||'Froilan Carranza';
 document.getElementById('avLetter').textContent=(S.nombre||'F')[0].toUpperCase();
-document.getElementById('ltitle-display').textContent=S.titulo||'Plan Financiero';
 document.getElementById('ifecha').value=hoy();
+// Precargar inflación de referencia en calculadoras
+const iRef=getInflRef();
+document.getElementById('pInflacion').value=S.ipc?Object.values(S.ipc).slice(-1)[0]:iRef;
 rD();
 </script>
 </body>
