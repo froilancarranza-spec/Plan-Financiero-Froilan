@@ -548,8 +548,8 @@ let S={...DEF,salidas:JSON.parse(JSON.stringify(DEF.salidas))};
 let CI=null,CR=null;
 let editSalidaId=null;
 
-function ld(){try{const r=sessionStorage.getItem('vx4');if(r){const p=JSON.parse(r);S={...DEF,...p,salidas:p.salidas||JSON.parse(JSON.stringify(DEF.salidas)),otrosIngresos:p.otrosIngresos||[]};}}catch(e){}}
-function sv(){try{sessionStorage.setItem('vx4',JSON.stringify(S));}catch(e){}}
+function ld(){try{const r=localStorage.getItem('vx4');if(r){const p=JSON.parse(r);S={...DEF,...p,salidas:p.salidas||JSON.parse(JSON.stringify(DEF.salidas)),otrosIngresos:p.otrosIngresos||[]};}}catch(e){}}
+function sv(){try{localStorage.setItem('vx4',JSON.stringify(S));}catch(e){}}
 function fmt(n){return new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0,maximumFractionDigits:0}).format(n||0);}
 function hoy(){return new Date().toISOString().split('T')[0];}
 function gm(cat){const n=new Date();return S.gastos.filter(g=>{const d=new Date(g.fecha);return(!cat||g.cat===cat)&&d.getMonth()===n.getMonth()&&d.getFullYear()===n.getFullYear();}).reduce((s,g)=>s+g.monto,0);}
