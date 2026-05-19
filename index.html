@@ -1054,17 +1054,27 @@ function calcScore(){
 function rLibertad(){
   const inflRef=getInflRef();
   const gastoAnual=Object.keys(S.salidas).reduce((tot,cat)=>tot+S.salidas[cat].reduce((s,i)=>s+i.m,0),0)*12;
-  const tasaRetiro=0.04; // regla del 4%
+  const tasaRetiro=parseFloat(S.tasaRetiro||0.04);
   const numeroDorado=gastoAnual/tasaRetiro;
+  const tasasPct=[{t:0.04,l:'Conservador'},{t:0.06,l:'Moderado'},{t:0.08,l:'Moderado-Agresivo'},{t:0.10,l:'Agresivo'},{t:0.12,l:'Wealth Dragons'}];
 
   document.getElementById('goldDisplay').innerHTML=`<div class="golden-display">
     <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;">Tu Número Dorado — Capital necesario para vivir de tus inversiones</div>
     <div class="golden-num">${fmt(Math.round(numeroDorado))}</div>
-    <div class="golden-lbl">Con gasto anual de ${fmt(Math.round(gastoAnual))} y regla del 4% de retiro seguro</div>
-    <div style="margin-top:12px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+    <div class="golden-lbl">Con gasto anual de ${fmt(Math.round(gastoAnual))} · Tasa de retiro: ${(tasaRetiro*100).toFixed(0)}%</div>
+    <div style="font-size:10px;color:var(--text3);margin:6px 0 12px;">Una tasa mayor = menor capital requerido, pero mayor riesgo de agotar el patrimonio</div>
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;">
+      ${tasasPct.map(x=>`<button onclick="S.tasaRetiro=${x.t};sv();rLibertad();" style="padding:5px 10px;font-size:10px;font-weight:600;border-radius:20px;border:1px solid ${Math.abs(tasaRetiro-x.t)<0.001?'var(--amber)':'rgba(255,255,255,0.13)'};background:${Math.abs(tasaRetiro-x.t)<0.001?'var(--amberDim)':'transparent'};color:${Math.abs(tasaRetiro-x.t)<0.001?'var(--amber)':'var(--text2)'};cursor:pointer;">${x.t*100}% — ${x.l}</button>`).join('')}
+    </div>
+    <div style="margin-top:4px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
       <div style="text-align:center;"><div style="font-size:10px;color:var(--text3);">Patrimonio pilares actual</div><div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--blue);">${fmt(Object.values(S.acum).reduce((a,b)=>a+b,0))}</div></div>
       <div style="text-align:center;"><div style="font-size:10px;color:var(--text3);">Progreso hacia el Número Dorado</div><div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--teal);">${Math.min(Object.values(S.acum).reduce((a,b)=>a+b,0)/numeroDorado*100,100).toFixed(1)}%</div></div>
       <div style="text-align:center;"><div style="font-size:10px;color:var(--text3);">Inflación de referencia</div><div style="font-size:16px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--amber);">${inflRef.toFixed(2)}%</div></div>
+    </div>
+    <div style="margin-top:12px;font-size:10px;color:var(--text3);padding:8px;background:rgba(0,0,0,0.2);border-radius:6px;">
+      💡 Regla del 4%: enfoque conservador, probado históricamente (Trinity Study 1998) para 30+ años · 
+      8-12%: enfoque Wealth Dragons, portafolios activos en bienes raíces e inversiones de alto rendimiento · 
+      Mayor tasa = mayor riesgo de descapitalización
     </div>
   </div>`;
 
