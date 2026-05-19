@@ -1054,7 +1054,7 @@ function calcScore(){
 function rLibertad(){
   const inflRef=getInflRef();
   const gastoAnual=Object.keys(S.salidas).reduce((tot,cat)=>tot+S.salidas[cat].reduce((s,i)=>s+i.m,0),0)*12;
-  const tasaRetiro=0.08; // regla del 8%
+  const tasaRetiro=0.04; // regla del 4%
   const numeroDorado=gastoAnual/tasaRetiro;
 
   document.getElementById('goldDisplay').innerHTML=`<div class="golden-display">
