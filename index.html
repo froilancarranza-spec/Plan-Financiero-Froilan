@@ -62,7 +62,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;}
 .ct{font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);}
 .ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;}
-.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
 .mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;}
 .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r) var(--r) 0 0;}
 .mc.ca::before{background:var(--accent);}
@@ -752,6 +752,8 @@ function rD(){
   const ingAdic=S.otrosIngresos.filter(o=>{if(!o.fecha)return false;const d=new Date(o.fecha);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear()&&o.frec==='mensual';}).reduce((s,o)=>s+o.valor,0);
   const ingresoTotal=S.ingreso+ingAdic;
   const patNeto=S.patActivos.reduce((s,a)=>s+a.valor,0)-S.patPasivos.reduce((s,a)=>s+a.valor,0);
+  const presupTotal=Object.values(S.salidas).reduce((tot,items)=>tot+items.reduce((s,i)=>s+i.m,0),0);
+const libre=ingresoTotal-presupTotal;
 
   // Alertas banner
   const alertas=calcAlertas();
@@ -771,7 +773,13 @@ function rD(){
       <div class="ms ${disp<0?'dn':'up'}">${disp<0?'⚠ Excedido':'✓ En control'}</div></div>
     <div class="mc co"><div class="ml">Patrimonio neto</div>
       <div class="mv" style="color:${patNeto<0?'var(--red)':'var(--orange)'};">${fmt(patNeto)}</div>
-      <div class="ms">${patNeto>=0?'Activos > Pasivos':'⚠ Pasivos > Activos'}</div></div>`;
+      <div class="ms">${patNeto>=0?'Activos > Pasivos':'⚠ Pasivos > Activos'}</div></div>
+    <div class="mc cp"><div class="ml">Presupuesto total</div>
+      <div class="mv" style="color:var(--purple);">${fmt(presupTotal)}</div>
+      <div class="ms">Suma de todas las salidas fijas</div></div>
+    <div class="mc ${libre<0?'cr2':'ca'}"><div class="ml">Ingreso vs presupuesto</div>
+      <div class="mv" style="color:${libre<0?'var(--red)':'var(--accent)'};">${fmt(libre)}</div>
+      <div class="ms ${libre<0?'dn':'up'}">${libre<0?'⚠ Excede ingreso':'✓ '+((libre/ingresoTotal)*100).toFixed(1)+'% libre'}</div></div>`;
 
   // KPI 70/20/10
   const nec70=S.ingreso*0.7,nonec20=S.ingreso*0.2,aho10=S.ingreso*0.1;
