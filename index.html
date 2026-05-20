@@ -328,7 +328,8 @@ select option{background:var(--surface2);}
       <button class="btn bg2b" style="font-size:11px;padding:5px 12px;margin-top:4px;" onclick="addFlujoTemp()"><i class="fa-solid fa-plus"></i> Agregar flujo</button>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
-      <button class="btn ba" onclick="addActivo()"><i class="fa-solid fa-plus"></i> Agregar</button>
+      <button class="btn ba" id="btn-agregar-activo" onclick="addActivo()"><i class="fa-solid fa-plus"></i> Agregar</button>
+      <button class="btn bg2b" id="btn-cancelar-activo" onclick="cancelEditActivo()" style="display:none;font-size:11px;">Cancelar</button>
       <div class="al al-ok" id="amsg"></div>
     </div>
   </div>
@@ -730,6 +731,33 @@ function tirActivo(a){
 }
 function fmtTIR(v){if(v===null)return'—';return(v*100).toFixed(2)+'% EA';}
 let flujosTemp=[];
+let editActivoId=null;
+function editActivo(id){
+  const a=S.activos.find(x=>x.id===id);if(!a)return;
+  editActivoId=id;
+  flujosTemp=a.flujos?[...a.flujos]:[];
+  document.getElementById('an').value=a.nombre||'';
+  document.getElementById('av2').value=a.valor||'';
+  document.getElementById('ap').value=a.pilar||'imprevistos';
+  document.getElementById('ati').value=a.tipo||'Ahorro bancario';
+  document.getElementById('arp').value=a.rent||'';
+  document.getElementById('anotaA').value=a.nota||'';
+  renderFlujosTemp();
+  const btn=document.getElementById('btn-agregar-activo');
+  if(btn){btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Guardar cambios';btn.style.background='var(--blue)';}
+  const btnC=document.getElementById('btn-cancelar-activo');if(btnC)btnC.style.display='inline-flex';
+  const msg=document.getElementById('amsg');
+  sA(msg,'ok','✏ Editando activo — modifica y guarda');
+  document.getElementById('an').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function cancelEditActivo(){
+  editActivoId=null;flujosTemp=[];renderFlujosTemp();
+  document.getElementById('an').value='';document.getElementById('av2').value='';
+  document.getElementById('arp').value='';document.getElementById('anotaA').value='';
+  const btn=document.getElementById('btn-agregar-activo');
+  if(btn){btn.innerHTML='<i class="fa-solid fa-plus"></i> Agregar';btn.style.background='';}
+  const btnC=document.getElementById('btn-cancelar-activo');if(btnC)btnC.style.display='none';
+}
 function addFlujoTemp(){
   const fecha=document.getElementById('af-fecha').value;
   const monto=parseFloat(document.getElementById('af-monto').value);
@@ -986,7 +1014,8 @@ function rA(){
             <div style="display:flex;align-items:center;gap:6px;text-align:right;"><div>
               <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(a.valor)}</div>
               <div style="font-size:10px;color:var(--text3);">${pctA}%</div></div>
-              <button class="bx" onclick="delA(${a.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`;
+              <button class="bx" style="color:var(--blue);" onclick="editActivo(${a.id})" title="Editar"><i class="fa-solid fa-pen"></i></button>
+              <button class="bx" onclick="delA(${a.id})" title="Eliminar"><i class="fa-solid fa-xmark"></i></button></div></div>`;
         }).join('')}
     </div>`;
   }).join('');
@@ -1013,12 +1042,28 @@ function buildRendChart(){
 function addActivo(){
   const nombre=document.getElementById('an').value.trim(),valor=parseFloat(document.getElementById('av2').value),pilar=document.getElementById('ap').value,tipo=document.getElementById('ati').value,rent=document.getElementById('arp').value,nota=document.getElementById('anotaA').value.trim(),msg=document.getElementById('amsg');
   if(!nombre){sA(msg,'err','⚠ Nombre requerido');return;}if(!valor||valor<=0){sA(msg,'err','⚠ Valor inválido');return;}
-  S.activos.push({id:nextId(),nombre,valor,pilar,tipo,rent:rent?parseFloat(rent):null,nota,flujos:[...flujosTemp]});
-  S.acum[pilar]=S.activos.filter(a=>a.pilar===pilar).reduce((s,a)=>s+a.valor,0);
+  if(editActivoId){
+    const idx=S.activos.findIndex(x=>x.id===editActivoId);
+    if(idx>=0){
+      const oldPilar=S.activos[idx].pilar;
+      S.activos[idx]={...S.activos[idx],nombre,valor,pilar,tipo,rent:rent?parseFloat(rent):null,nota,flujos:[...flujosTemp]};
+      S.acum[oldPilar]=S.activos.filter(a=>a.pilar===oldPilar).reduce((s,a)=>s+a.valor,0);
+      if(oldPilar!==pilar)S.acum[pilar]=S.activos.filter(a=>a.pilar===pilar).reduce((s,a)=>s+a.valor,0);
+    }
+    editActivoId=null;
+    const btn=document.getElementById('btn-agregar-activo');
+    if(btn){btn.innerHTML='<i class="fa-solid fa-plus"></i> Agregar';btn.style.background='';}
+    const btnC=document.getElementById('btn-cancelar-activo');if(btnC)btnC.style.display='none';
+    sA(msg,'ok','✓ Activo actualizado');
+  } else {
+    S.activos.push({id:nextId(),nombre,valor,pilar,tipo,rent:rent?parseFloat(rent):null,nota,flujos:[...flujosTemp]});
+    S.acum[pilar]=S.activos.filter(a=>a.pilar===pilar).reduce((s,a)=>s+a.valor,0);
+    sA(msg,'ok','✓ Activo agregado');
+  }
   flujosTemp=[];renderFlujosTemp();
   sv();
   document.getElementById('an').value='';document.getElementById('av2').value='';document.getElementById('arp').value='';document.getElementById('anotaA').value='';
-  sA(msg,'ok','✓ Activo agregado');rA();
+  rA();
 }
 function delA(id){const a=S.activos.find(x=>x.id===id);S.activos=S.activos.filter(x=>x.id!==id);if(a)S.acum[a.pilar]=S.activos.filter(x=>x.pilar===a.pilar).reduce((s,x)=>s+x.valor,0);sv();rA();}
 
