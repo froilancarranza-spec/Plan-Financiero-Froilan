@@ -690,7 +690,7 @@ const TIPOS=['Necesario','No nec.','Ahorro'];
 let S={...DEF,salidas:JSON.parse(JSON.stringify(DEF.salidas))};
 let CI=null,CR=null,CPat=null,CLib=null;
 
-function ld(){try{const r=localStorage.getItem('apex1');if(r){const p=JSON.parse(r);S={...DEF,...p,salidas:p.salidas||JSON.parse(JSON.stringify(DEF.salidas)),otrosIngresos:p.otrosIngresos||[],patActivos:p.patActivos||[],patPasivos:p.patPasivos||[],patHistorial:p.patHistorial||[],deudas:p.deudas||[],ipc:p.ipc||DEF.ipc};}}catch(e){}}
+function ld(){try{const r=localStorage.getItem('apex1');if(r){const p=JSON.parse(r);S={...DEF,...p,salidas:p.salidas||JSON.parse(JSON.stringify(DEF.salidas)),otrosIngresos:p.otrosIngresos||[],patActivos:p.patActivos||[],patPasivos:p.patPasivos||[],patHistorial:p.patHistorial||[],deudas:p.deudas||[],ipc:p.ipc||DEF.ipc};S.activos=S.activos.map(a=>({flujos:[],...a}));S.trm=S.trm||4200;}}catch(e){}}
 function sv(){try{localStorage.setItem('apex1',JSON.stringify(S));}catch(e){}}
 function fmt(n){return new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0,maximumFractionDigits:0}).format(n||0);}
 function hoy(){return new Date().toISOString().split('T')[0];}
