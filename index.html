@@ -316,7 +316,17 @@ select option{background:var(--surface2);}
       </div>
       <div class="fgrp"><div class="fl">Rentabilidad anual (%)</div><input type="number" id="arp" placeholder="6.5" step="0.1"/></div>
     </div>
-    <div class="fgrp" style="margin-bottom:12px;"><div class="fl">Notas</div><input type="text" id="anotaA" placeholder="Banco Bogotá, vence dic 2026"/></div>
+    <div class="fgrp" style="margin-bottom:12px;"><div class="fl">Notas (entidad, vencimiento, etc.)</div><input type="text" id="anotaA" placeholder="Banco Bogotá, vence dic 2026"/></div>
+    <div style="margin-bottom:12px;">
+      <div class="fl" style="margin-bottom:6px;">Flujos de caja para TIR <span style="color:var(--text3);font-size:10px;">— aporte inicial negativo, valor actual como último flujo positivo</span></div>
+      <div id="flujos-list" style="display:flex;flex-direction:column;gap:5px;margin-bottom:6px;"></div>
+      <div class="fg">
+        <div class="fgrp"><div class="fl">Fecha</div><input type="date" id="af-fecha"/></div>
+        <div class="fgrp"><div class="fl">Monto COP (negativo = aporte)</div><input type="number" id="af-monto" placeholder="-5000000"/></div>
+        <div class="fgrp"><div class="fl">TRM del día</div><input type="number" id="af-trm" placeholder="4200"/></div>
+      </div>
+      <button class="btn bg2b" style="font-size:11px;padding:5px 12px;margin-top:4px;" onclick="addFlujoTemp()"><i class="fa-solid fa-plus"></i> Agregar flujo</button>
+    </div>
     <div style="display:flex;align-items:center;gap:10px;">
       <button class="btn ba" onclick="addActivo()"><i class="fa-solid fa-plus"></i> Agregar</button>
       <div class="al al-ok" id="amsg"></div>
@@ -575,6 +585,13 @@ select option{background:var(--surface2);}
     </div>
     <div style="font-size:10px;color:var(--text3);"><i class="fa-solid fa-circle-info"></i> Fuente: DANE. La inflación de referencia usa el promedio 2020-2025 y afecta el Número Dorado, proyecciones de libertad financiera y metas de pilares.</div>
   </div>
+ <div class="fs">
+    <div class="ft"><i class="fa-solid fa-dollar-sign"></i> Tasa de cambio (TRM)</div>
+    <div class="fg2">
+      <div class="fgrp"><div class="fl">TRM actual COP/USD</div><input type="number" id="ctrm" placeholder="4200" step="1"/></div>
+      <div class="fgrp"><div class="fl" style="color:var(--text3);font-size:10px;"><i class="fa-solid fa-circle-info"></i> Actualiza con la TRM del día en <a href="https://www.banrep.gov.co" target="_blank" style="color:var(--blue);">Banrep</a></div></div>
+    </div>
+  </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <button class="btn ba" onclick="saveConfig()"><i class="fa-solid fa-floppy-disk"></i> Guardar todo</button>
     <div class="al al-ok" id="cfgmsg"></div>
@@ -608,6 +625,7 @@ const DEF={
   otrosIngresos:[],
   contrib:{imprevistos:500000,oxigeno:400000,retiro:200000,inversiones:0},
   acum:{imprevistos:0,oxigeno:0,retiro:0,inversiones:0},
+  trm:4200,
   gastos:[],activos:[],
   salidas:{
     'Ahorro / Inversión':[
@@ -679,6 +697,60 @@ function gm(cat){const n=new Date();return S.gastos.filter(g=>{const d=new Date(
 function metas(){return{imprevistos:S.ingreso,oxigeno:S.ingreso*6,retiro:S.ingreso*12*10,inversiones:S.ingreso*12*5};}
 function salPresupuestoCat(catLabel){return(S.salidas[catLabel]||[]).reduce((s,i)=>s+i.m,0);}
 function nextId(){return Date.now();}
+
+// ══════════════════════════════════════════════════════════
+// TIR (Tasa Interna de Retorno)
+// ══════════════════════════════════════════════════════════
+function calcularTIR(flujos,periodos){
+  if(!flujos||flujos.length<2)return null;
+  if(!flujos.some(f=>f<0)||!flujos.some(f=>f>0))return null;
+  let tir=0.1;
+  for(let i=0;i<1000;i++){
+    let vpn=0,dvpn=0;
+    for(let j=0;j<flujos.length;j++){
+      const t=periodos[j],f=flujos[j],d=Math.pow(1+tir,t);
+      vpn+=f/d; dvpn-=t*f/(d*(1+tir));
+    }
+    if(Math.abs(dvpn)<1e-12)break;
+    const delta=vpn/dvpn; tir-=delta;
+    if(Math.abs(delta)<1e-8)break;
+  }
+  return(tir>-1&&tir<100)?tir:null;
+}
+function tirActivo(a){
+  if(!a.flujos||a.flujos.length<2)return{cop:null,usd:null};
+  const t0=new Date(a.flujos[0].fecha).getTime();
+  const montos=a.flujos.map(f=>f.monto);
+  const periodos=a.flujos.map(f=>(new Date(f.fecha).getTime()-t0)/(365.25*24*3600*1000));
+  const tirCOP=calcularTIR(montos,periodos);
+  const trm=S.trm||4200;
+  const montosUSD=a.flujos.map(f=>f.monto/(f.trm||trm));
+  const tirUSD=calcularTIR(montosUSD,periodos);
+  return{cop:tirCOP,usd:tirUSD};
+}
+function fmtTIR(v){if(v===null)return'—';return(v*100).toFixed(2)+'% EA';}
+let flujosTemp=[];
+function addFlujoTemp(){
+  const fecha=document.getElementById('af-fecha').value;
+  const monto=parseFloat(document.getElementById('af-monto').value);
+  const trm=parseFloat(document.getElementById('af-trm').value)||S.trm||4200;
+  if(!fecha||isNaN(monto)){alert('Fecha y monto requeridos');return;}
+  flujosTemp.push({fecha,monto,trm});
+  document.getElementById('af-fecha').value='';
+  document.getElementById('af-monto').value='';
+  renderFlujosTemp();
+}
+function renderFlujosTemp(){
+  const c=document.getElementById('flujos-list');if(!c)return;
+  c.innerHTML=flujosTemp.length===0
+    ?'<div style="font-size:10px;color:var(--text3);">Sin flujos aún.</div>'
+    :flujosTemp.map((f,i)=>`<div style="display:flex;align-items:center;gap:8px;font-size:11px;background:var(--surface2);padding:4px 8px;border-radius:6px;">
+        <span style="color:var(--text3);">${f.fecha}</span>
+        <span style="font-family:'JetBrains Mono',monospace;color:${f.monto<0?'var(--red)':'var(--accent)'};">${fmt(f.monto)}</span>
+        <span style="color:var(--text3);">TRM ${f.trm.toLocaleString()}</span>
+        <button class="bx" onclick="flujosTemp.splice(${i},1);renderFlujosTemp()"><i class="fa-solid fa-xmark"></i></button>
+      </div>`).join('');
+}
 function getInflRef(){return S.ipc?parseFloat(((Object.values(S.ipc).reduce((a,b)=>a+b,0)/Object.values(S.ipc).length).toFixed(2))):IPC_REF;}
 
 // ══════════════════════════════════════════════════════════
@@ -909,7 +981,8 @@ function rA(){
           return`<div class="ar"><div><div style="font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;">${a.tipo}</div>
             <div style="font-size:12px;font-weight:500;">${a.nombre}</div>
             ${a.nota?`<div style="font-size:10px;color:var(--text3);">${a.nota}</div>`:''}
-            ${a.rent?`<div style="font-size:10px;color:var(--accent);">↑ ${a.rent}% est. anual</div>`:''}</div>
+            ${a.rent?`<div style="font-size:10px;color:var(--accent);">↑ ${a.rent}% est. anual</div>`:''}
+              ${(()=>{const t=tirActivo(a);if(t.cop===null&&t.usd===null)return'';return`<div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;"><span style="font-size:10px;background:var(--accentDim);color:var(--accent);padding:2px 7px;border-radius:10px;">TIR COP ${fmtTIR(t.cop)}</span><span style="font-size:10px;background:var(--blueDim);color:var(--blue);padding:2px 7px;border-radius:10px;">TIR USD ${fmtTIR(t.usd)}</span></div>`;})()}</div>
             <div style="display:flex;align-items:center;gap:6px;text-align:right;"><div>
               <div style="font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:${col};">${fmt(a.valor)}</div>
               <div style="font-size:10px;color:var(--text3);">${pctA}%</div></div>
@@ -940,9 +1013,11 @@ function buildRendChart(){
 function addActivo(){
   const nombre=document.getElementById('an').value.trim(),valor=parseFloat(document.getElementById('av2').value),pilar=document.getElementById('ap').value,tipo=document.getElementById('ati').value,rent=document.getElementById('arp').value,nota=document.getElementById('anotaA').value.trim(),msg=document.getElementById('amsg');
   if(!nombre){sA(msg,'err','⚠ Nombre requerido');return;}if(!valor||valor<=0){sA(msg,'err','⚠ Valor inválido');return;}
-  S.activos.push({id:nextId(),nombre,valor,pilar,tipo,rent:rent?parseFloat(rent):null,nota});
+  S.activos.push({id:nextId(),nombre,valor,pilar,tipo,rent:rent?parseFloat(rent):null,nota,flujos:[...flujosTemp]});
   S.acum[pilar]=S.activos.filter(a=>a.pilar===pilar).reduce((s,a)=>s+a.valor,0);
-  sv();document.getElementById('an').value='';document.getElementById('av2').value='';document.getElementById('arp').value='';document.getElementById('anotaA').value='';
+  flujosTemp=[];renderFlujosTemp();
+  sv();
+  document.getElementById('an').value='';document.getElementById('av2').value='';document.getElementById('arp').value='';document.getElementById('anotaA').value='';
   sA(msg,'ok','✓ Activo agregado');rA();
 }
 function delA(id){const a=S.activos.find(x=>x.id===id);S.activos=S.activos.filter(x=>x.id!==id);if(a)S.acum[a.pilar]=S.activos.filter(x=>x.pilar===a.pilar).reduce((s,x)=>s+x.valor,0);sv();rA();}
@@ -1403,13 +1478,16 @@ function lCfg(){
   [2020,2021,2022,2023,2024,2025,2026].forEach(y=>{const el=document.getElementById('inf'+y);if(el)el.value=ipc[y]||DEF.ipc[y];});
   const ref=getInflRef();const refEl=document.getElementById('infRef');if(refEl)refEl.value=ref.toFixed(2)+'%';
   renderOtrosIngresos();
+  const ctrmEl=document.getElementById('ctrm');if(ctrmEl&&S.trm)ctrmEl.value=S.trm;
 }
 function saveConfig(){
   const g=id=>parseFloat(document.getElementById(id).value)||0;
   S.ingreso=g('cing')||S.ingreso;
   S.ingFechaDia=parseInt(document.getElementById('cingFecha').value)||25;
   S.contrib={imprevistos:g('cimp'),oxigeno:g('cox'),retiro:g('cret'),inversiones:g('cinv')};
-  S.acum={imprevistos:g('caimp'),oxigeno:g('caox'),retiro:g('caret'),inversiones:g('cainv')};
+ S.acum={imprevistos:g('caimp'),oxigeno:g('caox'),retiro:g('caret'),inversiones:g('cainv')};
+  const trm=parseFloat(document.getElementById('ctrm').value);if(trm>0)S.trm=trm;
+  sv();sA(document.getElementById('cfgmsg'),'ok','✓ Configuración guardada');
   S.ipc={};
   [2020,2021,2022,2023,2024,2025,2026].forEach(y=>{S.ipc[y]=parseFloat(document.getElementById('inf'+y)?.value)||DEF.ipc[y];});
   guardarSnapshotPat();
