@@ -1418,7 +1418,6 @@ function delDeuda(id){S.deudas=S.deudas.filter(d=>d.id!==id);sv();rDeudas();}
 // ══════════════════════════════════════════════════════════
 // GASTOS / HISTORIAL
 // ══════════════════════════════════════════════════════════
-function addGasto(){
 function autoTipo(){
   const cat=document.getElementById('icat').value;
   const tipoEl=document.getElementById('itipo');if(!tipoEl)return;
