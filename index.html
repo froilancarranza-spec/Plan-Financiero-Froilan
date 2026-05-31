@@ -1602,7 +1602,6 @@ ld();
 document.getElementById('uname-display').textContent=S.nombre||'Froilan Carranza';
 document.getElementById('avLetter').textContent=(S.nombre||'F')[0].toUpperCase();
 document.getElementById('ifecha').value=hoy();
-autoTipo();
 // Precargar inflación de referencia en calculadoras
 const iRef=getInflRef();
 document.getElementById('pInflacion').value=S.ipc?Object.values(S.ipc).slice(-1)[0]:iRef;
