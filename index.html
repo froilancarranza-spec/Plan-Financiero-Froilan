@@ -460,14 +460,21 @@ select option{background:var(--surface2);}
       <div class="fgrp"><div class="fl">Monto (COP)</div><input type="number" id="imonto" placeholder="150000" min="0"/></div>
       <div class="fgrp"><div class="fl">Fecha</div><input type="date" id="ifecha"/></div>
     </div>
-    <div class="fg2">
+<div class="fg3">
       <div class="fgrp"><div class="fl">Categoría</div>
-        <select id="icat">
+        <select id="icat" onchange="autoTipo()">
           <option value="vivienda">Vivienda</option><option value="alimentacion">Alimentación</option>
           <option value="transporte">Transporte</option><option value="salud">Salud</option>
           <option value="entretenimiento">Entretenimiento</option><option value="prestamos">Préstamos</option>
           <option value="imprevistos">Fondo imprevistos</option><option value="oxigeno">Reserva oxígeno</option>
           <option value="retiro">Cuenta retiro</option><option value="inversiones">Inversiones</option>
+        </select>
+      </div>
+      <div class="fgrp"><div class="fl">Tipo</div>
+        <select id="itipo">
+          <option value="Necesario">Necesario</option>
+          <option value="No nec.">No necesario</option>
+          <option value="Ahorro">Ahorro / Inversión</option>
         </select>
       </div>
       <div class="fgrp"><div class="fl">Subcategoría</div><input type="text" id="isub" placeholder="Arriendo, streaming..."/></div>
@@ -881,11 +888,28 @@ const libre=ingresoTotal-presupTotal;
       <div class="mv" style="color:${libre<0?'var(--red)':'var(--accent)'};">${fmt(libre)}</div>
       <div class="ms ${libre<0?'dn':'up'}">${libre<0?'⚠ Excede ingreso':'✓ '+((libre/ingresoTotal)*100).toFixed(1)+'% libre'}</div></div>`;
 
-  // KPI 70/20/10
-  const nec70=S.ingreso*0.7,nonec20=S.ingreso*0.2,aho10=S.ingreso*0.1;
-  const gastNec=gm('vivienda')+gm('alimentacion')+gm('transporte')+gm('salud');
-  const gastNoNec=gm('entretenimiento')+gm('prestamos');
-  const gastAho=gm('imprevistos')+gm('oxigeno')+gm('retiro')+gm('inversiones');
+// KPI 70/20/10 — límites desde presupuesto base, gastos desde tipo real del registro
+  const presupNec=Object.values(S.salidas).reduce((tot,items)=>tot+items.filter(i=>i.t==='Necesario').reduce((s,i)=>s+i.m,0),0);
+  const presupNoNec=Object.values(S.salidas).reduce((tot,items)=>tot+items.filter(i=>i.t==='No nec.').reduce((s,i)=>s+i.m,0),0);
+  const presupAho=Object.values(S.salidas).reduce((tot,items)=>tot+items.filter(i=>i.t==='Ahorro').reduce((s,i)=>s+i.m,0),0);
+  const nec70=presupNec||S.ingreso*0.7;
+  const nonec20=presupNoNec||S.ingreso*0.2;
+  const aho10=presupAho||S.ingreso*0.1;
+  const now2=new Date();
+  const gastMes=S.gastos.filter(g=>{const d=new Date(g.fecha);return d.getMonth()===now2.getMonth()&&d.getFullYear()===now2.getFullYear();});
+  const ahoCatsK=['imprevistos','oxigeno','retiro','inversiones'];
+  const necCatsK=['vivienda','alimentacion','transporte','salud'];
+  function resolverTipo(g){
+    if(g.tipo==='Necesario')return'Necesario';
+    if(g.tipo==='No nec.')return'No nec.';
+    if(g.tipo==='Ahorro')return'Ahorro';
+    if(ahoCatsK.includes(g.cat))return'Ahorro';
+    if(necCatsK.includes(g.cat))return'Necesario';
+    return'No nec.';
+  }
+  const gastNec=gastMes.filter(g=>resolverTipo(g)==='Necesario').reduce((s,g)=>s+g.monto,0);
+  const gastNoNec=gastMes.filter(g=>resolverTipo(g)==='No nec.').reduce((s,g)=>s+g.monto,0);
+  const gastAho=gastMes.filter(g=>resolverTipo(g)==='Ahorro').reduce((s,g)=>s+g.monto,0);
   function hbarColor(v,l){const p=v/l*100;return p>100?'var(--red)':p>85?'var(--amber)':'var(--accent)';}
   function hbarData(label,gasto,limite,pTarget){
     const pct=Math.min(gasto/limite*100,100),col=hbarColor(gasto,limite);
@@ -942,8 +966,13 @@ function rList(id,n){
   if(!items.length){c.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3);font-size:12px;">Sin gastos registrados aún.</div>';return;}
   c.innerHTML=items.map(gH).join('');
 }
-function gH(g){const col=CH[g.cat]||'#94a3b8';return`<div class="li"><div class="ll"><div class="ln">${g.desc}</div><div class="lm">${g.sub||''} · ${g.fecha}</div></div><div class="lr"><span class="badge badge-${g.cat}">${CL[g.cat]||g.cat}</span><span class="lv" style="color:${col};">${fmt(g.monto)}</span><button class="bx" onclick="delG(${g.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`;}
-
+function gH(g){
+  const col=CH[g.cat]||'#94a3b8';
+  const tipo=g.tipo||'';
+  const tipoCol=tipo==='Necesario'?'var(--accent)':tipo==='Ahorro'?'var(--blue)':'var(--amber)';
+  const tipoBadge=tipo?`<span style="font-size:9px;font-weight:600;color:${tipoCol};background:${tipoCol}22;border-radius:3px;padding:1px 5px;margin-right:4px;">${tipo}</span>`:'';
+  return`<div class="li"><div class="ll"><div class="ln">${g.desc}</div><div class="lm">${g.sub||''} · ${g.fecha}</div></div><div class="lr">${tipoBadge}<span class="badge badge-${g.cat}">${CL[g.cat]||g.cat}</span><span class="lv" style="color:${col};">${fmt(g.monto)}</span><button class="bx" onclick="delG(${g.id})"><i class="fa-solid fa-xmark"></i></button></div></div>`;
+}
 // ══════════════════════════════════════════════════════════
 // PILARES
 // ══════════════════════════════════════════════════════════
@@ -1390,9 +1419,19 @@ function delDeuda(id){S.deudas=S.deudas.filter(d=>d.id!==id);sv();rDeudas();}
 // GASTOS / HISTORIAL
 // ══════════════════════════════════════════════════════════
 function addGasto(){
-  const desc=document.getElementById('idesc').value.trim(),monto=parseFloat(document.getElementById('imonto').value),fecha=document.getElementById('ifecha').value,cat=document.getElementById('icat').value,sub=document.getElementById('isub').value.trim(),nota=document.getElementById('inota').value.trim(),msg=document.getElementById('gmsg');
+function autoTipo(){
+  const cat=document.getElementById('icat').value;
+  const tipoEl=document.getElementById('itipo');if(!tipoEl)return;
+  const ahoCats=['imprevistos','oxigeno','retiro','inversiones'];
+  const necCats=['vivienda','alimentacion','transporte','salud'];
+  if(ahoCats.includes(cat))tipoEl.value='Ahorro';
+  else if(necCats.includes(cat))tipoEl.value='Necesario';
+  else tipoEl.value='No nec.';
+}
+function addGasto(){
+  const desc=document.getElementById('idesc').value.trim(),monto=parseFloat(document.getElementById('imonto').value),fecha=document.getElementById('ifecha').value,cat=document.getElementById('icat').value,tipo=document.getElementById('itipo').value,sub=document.getElementById('isub').value.trim(),nota=document.getElementById('inota').value.trim(),msg=document.getElementById('gmsg');
   if(!desc){sA(msg,'err','⚠ Descripción requerida');return;}if(!monto||monto<=0){sA(msg,'err','⚠ Monto inválido');return;}if(!fecha){sA(msg,'err','⚠ Selecciona fecha');return;}
-  S.gastos.unshift({id:nextId(),desc,monto,fecha,cat,sub,nota});sv();
+  S.gastos.unshift({id:nextId(),desc,monto,fecha,cat,tipo,sub,nota});sv();
   document.getElementById('idesc').value='';document.getElementById('imonto').value='';document.getElementById('isub').value='';document.getElementById('inota').value='';
   sA(msg,'ok','✓ Registrado');rU8();
 }
@@ -1563,6 +1602,7 @@ ld();
 document.getElementById('uname-display').textContent=S.nombre||'Froilan Carranza';
 document.getElementById('avLetter').textContent=(S.nombre||'F')[0].toUpperCase();
 document.getElementById('ifecha').value=hoy();
+autoTipo();
 // Precargar inflación de referencia en calculadoras
 const iRef=getInflRef();
 document.getElementById('pInflacion').value=S.ipc?Object.values(S.ipc).slice(-1)[0]:iRef;
