@@ -549,8 +549,13 @@ select option{background:var(--surface2);}
   <div class="ph"><div><div class="pt">Registrar</div><div class="ps">Gastos e ingresos del mes</div></div>
     <button class="btn bg2b" style="font-size:11px;" onclick="go('ingresos')"><i class="fa-solid fa-circle-plus"></i> Ingreso puntual</button>
   </div>
+  <div class="it">
+    <div class="itb active" onclick="sit('regGasto','registro')"><i class="fa-solid fa-receipt"></i> Gasto</div>
+    <div class="itb" onclick="sit('regExtracto','registro')"><i class="fa-solid fa-file-lines"></i> Extracto Nu</div>
+  </div>
+  <div id="regGasto" class="itc active">
   <div class="fs">
-    <div class="ft"><i class="fa-solid fa-receipt"></i> Nuevo movimiento</div>
+    <div class="ft"><i class="fa-solid fa-receipt"></i> Nuevo gasto</div>
     <div class="fg">
       <div class="fgrp"><div class="fl">Descripción</div><input type="text" id="idesc" placeholder="Mercado, gasolina, Netflix..."/></div>
       <div class="fgrp"><div class="fl">Monto (COP)</div><input type="number" id="imonto" placeholder="150000" min="0"/></div>
@@ -582,6 +587,52 @@ select option{background:var(--surface2);}
     </div>
   </div>
   <div class="card"><div class="ch"><div class="ct">Últimas 8 transacciones</div></div><div id="ult8"></div></div>
+  </div>
+
+  <div id="regExtracto" class="itc">
+  <div class="fs">
+    <div class="ft"><i class="fa-solid fa-file-lines"></i> Importar extracto Nu</div>
+    <div style="background:var(--amberDim);border:1px solid rgba(251,191,36,0.2);border-radius:var(--rs);padding:10px 12px;margin-bottom:14px;font-size:11px;color:var(--amber);">
+      <i class="fa-solid fa-triangle-exclamation"></i> <strong>Tu salario base ya está registrado en Configuración.</strong> Solo importa ingresos adicionales. Los que coincidan con tu salario se marcarán para excluir automáticamente.
+    </div>
+    <div class="fg2" style="margin-bottom:12px;">
+      <div class="fgrp"><div class="fl">Año del extracto</div>
+        <select id="nuAnio" style="width:auto;"><option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option></select>
+      </div>
+      <div class="fgrp"><div class="fl">Mes del extracto</div>
+        <select id="nuMes" style="width:auto;">
+          <option value="01">Enero</option><option value="02">Febrero</option><option value="03">Marzo</option>
+          <option value="04">Abril</option><option value="05">Mayo</option><option value="06">Junio</option>
+          <option value="07" selected>Julio</option><option value="08">Agosto</option><option value="09">Septiembre</option>
+          <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+        </select>
+      </div>
+    </div>
+    <div class="fgrp" style="margin-bottom:12px;">
+      <div class="fl">Pega el texto del extracto aquí</div>
+      <textarea id="nuTexto" rows="10" placeholder="01 jul Compra en RAPPI -$59.600,00&#10;02 jul Recibiste de Bancolombia +$9.604.048,00&#10;03 jul Enviaste a SKANDIA -$700.000,00" style="width:100%;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:var(--rs);padding:10px;resize:vertical;line-height:1.8;min-height:120px;"></textarea>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="btn ba" onclick="parsearExtractoNu()"><i class="fa-solid fa-wand-magic-sparkles"></i> Analizar extracto</button>
+      <div class="al al-ok" id="nuMsg"></div>
+    </div>
+  </div>
+  <div id="nuPreview" style="display:none;" class="card">
+    <div class="ch">
+      <div class="ct" id="nuPreviewTitle">Movimientos detectados</div>
+      <div style="display:flex;gap:6px;">
+        <button class="btn ba" style="font-size:11px;padding:4px 10px;" onclick="confirmarExtractoNu()"><i class="fa-solid fa-check"></i> Cargar seleccionados</button>
+        <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="exportarExtractoExcel()"><i class="fa-solid fa-file-excel"></i> Exportar Excel</button>
+        <button class="btn bg2b" style="font-size:11px;padding:4px 10px;" onclick="document.getElementById('nuPreview').style.display='none'">Cancelar</button>
+      </div>
+    </div>
+    <div id="nuTabla"></div>
+    <div style="padding:10px 0;border-top:1px solid var(--border);margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text3);">
+      <span id="nuResumen"></span>
+      <span style="color:var(--text2);">Desmarca los ingresos que ya estén en tu configuración</span>
+    </div>
+  </div>
+  </div>
 </div>
 
 <!-- HISTORIAL -->
@@ -1726,6 +1777,115 @@ function rAnalisis(){
       <div style="font-size:9px;color:var(--text3);">${flujoIng[i]>0?(flujoNet[i]/flujoIng[i]*100).toFixed(0)+'%':'—'}</div>
     </div>`;}).join('')}</div>`;}
 }
+// ══════════════════════════════════════════════════════════
+// EXTRACTO NU — PARSER E IMPORTADOR
+// ══════════════════════════════════════════════════════════
+const NU_MESES={'ene':1,'feb':2,'mar':3,'abr':4,'may':5,'jun':6,'jul':7,'ago':8,'sep':9,'oct':10,'nov':11,'dic':12};
+let nuMovimientos=[];
+function parsearExtractoNu(){
+  const texto=document.getElementById('nuTexto').value.trim();
+  const anio=document.getElementById('nuAnio').value;
+  const msg=document.getElementById('nuMsg');
+  if(!texto){sA(msg,'err','⚠ Pega el texto del extracto primero');return;}
+  const lineas=texto.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+  const movs=[];
+  lineas.forEach(linea=>{
+    const regex=/^(\d{1,2})\s+(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)\s+(.+?)\s+([+-])\$([0-9.,]+)$/i;
+    const m=linea.match(regex);if(!m)return;
+    const dia=m[1].padStart(2,'0');
+    const mesNum=String(NU_MESES[m[2].toLowerCase()]).padStart(2,'0');
+    const fecha=`${anio}-${mesNum}-${dia}`;
+    const desc=m[3].trim();const signo=m[4];
+    const montoStr=m[5].replace(/\./g,'').replace(',','.');
+    const monto=parseFloat(montoStr);if(isNaN(monto)||monto<=0)return;
+    let tipo='No nec.',cat='entretenimiento',esIngreso=false,esDuplicado=false,incluir=true;
+    if(signo==='+'){
+      esIngreso=true;tipo='Ingreso';cat='ingreso';
+      const salario=S.ingreso||0;
+      if(salario>0&&Math.abs(monto-salario)/salario<=0.10){esDuplicado=true;incluir=false;}
+    } else {
+      if(/farmacia|droguería|clínica|hospital|médico|salud|eps/i.test(desc)){tipo='Necesario';cat='salud';}
+      else if(/supermercad|éxito|carulla|jumbo|olímpica|mercado|d1|ara|novaventa/i.test(desc)){tipo='Necesario';cat='alimentacion';}
+      else if(/gasolina|combustible|parqueadero|peaje|transmilenio|sitp|uber|taxi|cabify/i.test(desc)){tipo='Necesario';cat='transporte';}
+      else if(/arriendo|administración|gas|acueducto|energía|electricidad|epm|codensa/i.test(desc)){tipo='Necesario';cat='vivienda';}
+      else if(/tarjeta|pagaste|cuota|crédito|préstamo/i.test(desc)){tipo='Necesario';cat='prestamos';}
+      else if(/cajero|retiro/i.test(desc)){tipo='Necesario';cat='vivienda';}
+      else if(/rappi|domicilio|restaurante|comida|food|mcdonald|kfc|subway|pizza/i.test(desc)){tipo='No nec.';cat='alimentacion';}
+      else if(/netflix|spotify|amazon prime|disney|youtube|suscripci/i.test(desc)){tipo='No nec.';cat='entretenimiento';}
+      else if(/skandia|seguros|pensión|fondo|inversión|accival|trii|hapi/i.test(desc)){tipo='Ahorro';cat='retiro';}
+      else{tipo='No nec.';cat='entretenimiento';}
+    }
+    movs.push({fecha,desc,monto,tipo,cat,esIngreso,esDuplicado,incluir,signo});
+  });
+  if(!movs.length){sA(msg,'err','⚠ No se detectaron movimientos. Verifica el formato.');return;}
+  nuMovimientos=movs;renderNuPreview(movs);
+  const excluidos=movs.filter(m=>m.esDuplicado).length;
+  sA(msg,'ok',`✓ ${movs.length} movimientos detectados${excluidos>0?' · '+excluidos+' posible(s) salario excluido(s)':''}`);
+}
+function renderNuPreview(movs){
+  const cats=['vivienda','alimentacion','transporte','salud','entretenimiento','prestamos','imprevistos','oxigeno','retiro','inversiones'];
+  const inc=movs.filter((_,i)=>{const el=document.getElementById('nu-inc-'+i);return el?el.checked:_.incluir;});
+  const totalGastos=inc.filter(m=>!m.esIngreso).reduce((s,m)=>s+m.monto,0);
+  const totalIngresos=inc.filter(m=>m.esIngreso).reduce((s,m)=>s+m.monto,0);
+  document.getElementById('nuPreviewTitle').textContent=`${movs.length} movimientos detectados`;
+  document.getElementById('nuResumen').innerHTML=`<span style="color:var(--red);">↓ Gastos: ${fmt(totalGastos)}</span> &nbsp;|&nbsp; <span style="color:var(--accent);">↑ Ingresos: ${fmt(totalIngresos)}</span>`;
+  const rows=movs.map((m,i)=>{
+    const catOpts=cats.map(cat=>`<option value="${cat}" ${cat===m.cat?'selected':''}>${CL[cat]}</option>`).join('');
+    const tipoOpts=['Necesario','No nec.','Ahorro'].map(t=>`<option ${t===m.tipo?'selected':''}>${t}</option>`).join('');
+    const tipoCol=m.esIngreso?'var(--accent)':m.tipo==='Necesario'?'var(--blue)':m.tipo==='Ahorro'?'var(--purple)':'var(--amber)';
+    const rowBg=m.esDuplicado?'background:rgba(251,191,36,0.08);':'';
+    const dupBadge=m.esDuplicado?`<span style="font-size:9px;background:var(--amberDim);color:var(--amber);border-radius:3px;padding:1px 5px;margin-left:4px;">⚠ posible salario</span>`:'';
+    return`<div style="${rowBg}display:grid;grid-template-columns:28px 85px 1fr 110px 100px 90px 24px;gap:6px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--border);font-size:11px;">
+      <input type="checkbox" id="nu-inc-${i}" ${m.incluir?'checked':''} onchange="nuMovimientos[${i}].incluir=this.checked;renderNuPreview(nuMovimientos);" style="width:14px;height:14px;cursor:pointer;accent-color:var(--accent);"/>
+      <input type="date" id="nu-fecha-${i}" value="${m.fecha}" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;width:100%;"/>
+      <div><input type="text" id="nu-desc-${i}" value="${m.desc.replace(/"/g,'&quot;')}" style="font-size:11px;padding:3px 6px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;width:100%;"/>${dupBadge}</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-weight:700;color:${m.esIngreso?'var(--accent)':'var(--red)'};">${m.signo}${fmt(m.monto)}</div>
+      ${m.esIngreso
+        ?`<div style="color:var(--accent);font-size:10px;font-weight:600;grid-column:span 2;">Ingreso puntual</div>`
+        :`<select id="nu-cat-${i}" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;">${catOpts}</select>
+          <select id="nu-tipo-${i}" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:${tipoCol};border-radius:4px;">${tipoOpts}</select>`
+      }
+      <button class="bx" onclick="nuMovimientos.splice(${i},1);renderNuPreview(nuMovimientos);" title="Eliminar"><i class="fa-solid fa-xmark"></i></button>
+    </div>`;
+  }).join('');
+  document.getElementById('nuTabla').innerHTML=`<div style="display:grid;grid-template-columns:28px 85px 1fr 110px 100px 90px 24px;gap:6px;padding:6px 4px;border-bottom:2px solid var(--border2);font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;"><div>✓</div><div>Fecha</div><div>Descripción</div><div>Monto</div><div>Categoría</div><div>Tipo</div><div></div></div>${rows}`;
+  document.getElementById('nuPreview').style.display='block';
+}
+function confirmarExtractoNu(){
+  const sel=nuMovimientos.filter((_,i)=>document.getElementById('nu-inc-'+i)?.checked);
+  if(!sel.length){sA(document.getElementById('nuMsg'),'err','⚠ Selecciona al menos un movimiento');return;}
+  let cargados=0,ingresos=0;
+  sel.forEach(m=>{
+    const i=nuMovimientos.indexOf(m);
+    const fecha=document.getElementById('nu-fecha-'+i)?.value||m.fecha;
+    const desc=document.getElementById('nu-desc-'+i)?.value.trim()||m.desc;
+    if(m.esIngreso){S.ingresosPuntuales.push({id:nextId(),desc,monto:m.monto,fecha,tipo:'Nu Bank',nota:'Importado desde extracto'});ingresos++;}
+    else{const cat=document.getElementById('nu-cat-'+i)?.value||m.cat;const tipo=document.getElementById('nu-tipo-'+i)?.value||m.tipo;S.gastos.unshift({id:nextId(),desc,monto:m.monto,fecha,cat,tipo,sub:'Nu Bank',nota:'Importado desde extracto'});cargados++;}
+  });
+  sv();nuMovimientos=[];
+  document.getElementById('nuTexto').value='';document.getElementById('nuPreview').style.display='none';
+  sA(document.getElementById('nuMsg'),'ok',`✓ ${cargados} gastos y ${ingresos} ingresos cargados`);
+  rU8();rD();alert(`✅ Importación completa\n\n• ${cargados} gastos cargados al historial\n• ${ingresos} ingresos registrados como puntuales`);
+}
+function exportarExtractoExcel(){
+  if(!nuMovimientos.length)return;
+  const headers=['Fecha','Descripción','Monto','Tipo movimiento','Categoría','Tipo gasto','Incluido'];
+  const rows=nuMovimientos.map((m,i)=>{
+    const fecha=document.getElementById('nu-fecha-'+i)?.value||m.fecha;
+    const desc=document.getElementById('nu-desc-'+i)?.value||m.desc;
+    const cat=m.esIngreso?'Ingreso':document.getElementById('nu-cat-'+i)?.value||m.cat;
+    const tipo=m.esIngreso?'Ingreso puntual':document.getElementById('nu-tipo-'+i)?.value||m.tipo;
+    const inc=document.getElementById('nu-inc-'+i)?.checked?'Sí':'No';
+    return[fecha,desc,(m.esIngreso?'+':'-')+m.monto,m.esIngreso?'Ingreso':'Gasto',CL[cat]||cat,tipo,inc];
+  });
+  const csv=headers.join(',')+'
+'+rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('
+');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));
+  a.download=`extracto_nu_${new Date().toISOString().split('T')[0]}.csv`;a.click();
+  sA(document.getElementById('nuMsg'),'ok','✓ Excel descargado');
+}
+
 // ══════════════════════════════════════════════════════════
 // PRESUPUESTO
 // ══════════════════════════════════════════════════════════
