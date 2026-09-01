@@ -593,10 +593,10 @@ select option{background:var(--surface2);}
   <div class="fs">
     <div class="ft"><i class="fa-solid fa-file-lines"></i> Importar extracto Nu</div>
     <div style="background:var(--amberDim);border:1px solid rgba(251,191,36,0.2);border-radius:var(--rs);padding:10px 12px;margin-bottom:14px;font-size:11px;color:var(--amber);">
-      <i class="fa-solid fa-triangle-exclamation"></i> <strong>Tu salario base ya está registrado en Configuración.</strong> Solo importa ingresos adicionales. Los que coincidan con tu salario se marcarán para excluir automáticamente.
+      <i class="fa-solid fa-triangle-exclamation"></i> <strong>Tu salario base ya esta registrado en Configuracion.</strong> Solo importa ingresos adicionales. Los que coincidan con tu salario se marcaran para excluir automaticamente.
     </div>
     <div class="fg2" style="margin-bottom:12px;">
-      <div class="fgrp"><div class="fl">Año del extracto</div>
+      <div class="fgrp"><div class="fl">Anio del extracto</div>
         <select id="nuAnio" style="width:auto;"><option value="2026">2026</option><option value="2025">2025</option><option value="2024">2024</option></select>
       </div>
       <div class="fgrp"><div class="fl">Mes del extracto</div>
@@ -609,8 +609,8 @@ select option{background:var(--surface2);}
       </div>
     </div>
     <div class="fgrp" style="margin-bottom:12px;">
-      <div class="fl">Pega el texto del extracto aquí</div>
-      <textarea id="nuTexto" rows="10" placeholder="01 jul Compra en RAPPI -$59.600,00&#10;02 jul Recibiste de Bancolombia +$9.604.048,00&#10;03 jul Enviaste a SKANDIA -$700.000,00" style="width:100%;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:var(--rs);padding:10px;resize:vertical;line-height:1.8;min-height:120px;"></textarea>
+      <div class="fl">Pega el texto del extracto aqui</div>
+      <textarea id="nuTexto" rows="10" placeholder="01 jul Compra en RAPPI -$59.600,00" style="width:100%;font-size:11px;font-family:monospace;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:var(--rs);padding:10px;resize:vertical;line-height:1.8;min-height:120px;"></textarea>
     </div>
     <div style="display:flex;align-items:center;gap:10px;">
       <button class="btn ba" onclick="parsearExtractoNu()"><i class="fa-solid fa-wand-magic-sparkles"></i> Analizar extracto</button>
@@ -629,7 +629,7 @@ select option{background:var(--surface2);}
     <div id="nuTabla"></div>
     <div style="padding:10px 0;border-top:1px solid var(--border);margin-top:8px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text3);">
       <span id="nuResumen"></span>
-      <span style="color:var(--text2);">Desmarca los ingresos que ya estén en tu configuración</span>
+      <span style="color:var(--text2);">Desmarca los ingresos que ya esten en tu configuracion</span>
     </div>
   </div>
   </div>
@@ -1777,116 +1777,169 @@ function rAnalisis(){
       <div style="font-size:9px;color:var(--text3);">${flujoIng[i]>0?(flujoNet[i]/flujoIng[i]*100).toFixed(0)+'%':'—'}</div>
     </div>`;}).join('')}</div>`;}
 }
-// ══════════════════════════════════════════════════════════
-// EXTRACTO NU — PARSER E IMPORTADOR
-// ══════════════════════════════════════════════════════════
-const NU_MESES={'ene':1,'feb':2,'mar':3,'abr':4,'may':5,'jun':6,'jul':7,'ago':8,'sep':9,'oct':10,'nov':11,'dic':12};
-let nuMovimientos=[];
-function parsearExtractoNu(){
-  const texto=document.getElementById('nuTexto').value.trim();
-  const anio=document.getElementById('nuAnio').value;
-  const msg=document.getElementById('nuMsg');
-  if(!texto){sA(msg,'err','⚠ Pega el texto del extracto primero');return;}
-  const lineas=texto.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
-  const movs=[];
-  lineas.forEach(linea=>{
-    const regex=/^(\d{1,2})\s+(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)\s+(.+?)\s+([+-])\$([0-9.,]+)$/i;
-    const m=linea.match(regex);if(!m)return;
-    const dia=m[1].padStart(2,'0');
-    const mesNum=String(NU_MESES[m[2].toLowerCase()]).padStart(2,'0');
-    const fecha=`${anio}-${mesNum}-${dia}`;
-    const desc=m[3].trim();const signo=m[4];
-    const montoStr=m[5].replace(/\./g,'').replace(',','.');
-    const monto=parseFloat(montoStr);if(isNaN(monto)||monto<=0)return;
-    let tipo='No nec.',cat='entretenimiento',esIngreso=false,esDuplicado=false,incluir=true;
-    if(signo==='+'){
-      esIngreso=true;tipo='Ingreso';cat='ingreso';
-      const salario=S.ingreso||0;
-      if(salario>0&&Math.abs(monto-salario)/salario<=0.10){esDuplicado=true;incluir=false;}
+
+// NU BANK PARSER
+var NU_MESES = {ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,oct:10,nov:11,dic:12};
+var nuMovimientos = [];
+
+function parsearExtractoNu() {
+  var texto = document.getElementById('nuTexto').value.trim();
+  var anio = document.getElementById('nuAnio').value;
+  var msg = document.getElementById('nuMsg');
+  if (!texto) { sA(msg,'err','Pega el texto del extracto primero'); return; }
+  var lineas = texto.split('\n');
+  var movs = [];
+  for (var li = 0; li < lineas.length; li++) {
+    var linea = lineas[li].trim();
+    if (!linea) continue;
+    var regex = /^(\d{1,2})\s+(ene|feb|mar|abr|may|jun|jul|ago|sep|oct|nov|dic)\s+(.+?)\s+([+-])\$([0-9.,]+)$/i;
+    var m = linea.match(regex);
+    if (!m) continue;
+    var dia = m[1].length === 1 ? '0' + m[1] : m[1];
+    var mesNum = NU_MESES[m[2].toLowerCase()];
+    var mesStr = mesNum < 10 ? '0' + mesNum : '' + mesNum;
+    var fecha = anio + '-' + mesStr + '-' + dia;
+    var desc = m[3].trim();
+    var signo = m[4];
+    var montoStr = m[5].replace(/\./g,'').replace(',','.');
+    var monto = parseFloat(montoStr);
+    if (isNaN(monto) || monto <= 0) continue;
+    var tipo = 'No nec.';
+    var cat = 'entretenimiento';
+    var esIngreso = false;
+    var esDuplicado = false;
+    var incluir = true;
+    if (signo === '+') {
+      esIngreso = true; tipo = 'Ingreso'; cat = 'ingreso';
+      var salario = S.ingreso || 0;
+      if (salario > 0 && Math.abs(monto - salario) / salario <= 0.10) {
+        esDuplicado = true; incluir = false;
+      }
     } else {
-      if(/farmacia|droguería|clínica|hospital|médico|salud|eps/i.test(desc)){tipo='Necesario';cat='salud';}
-      else if(/supermercad|éxito|carulla|jumbo|olímpica|mercado|d1|ara|novaventa/i.test(desc)){tipo='Necesario';cat='alimentacion';}
-      else if(/gasolina|combustible|parqueadero|peaje|transmilenio|sitp|uber|taxi|cabify/i.test(desc)){tipo='Necesario';cat='transporte';}
-      else if(/arriendo|administración|gas|acueducto|energía|electricidad|epm|codensa/i.test(desc)){tipo='Necesario';cat='vivienda';}
-      else if(/tarjeta|pagaste|cuota|crédito|préstamo/i.test(desc)){tipo='Necesario';cat='prestamos';}
-      else if(/cajero|retiro/i.test(desc)){tipo='Necesario';cat='vivienda';}
-      else if(/rappi|domicilio|restaurante|comida|food|mcdonald|kfc|subway|pizza/i.test(desc)){tipo='No nec.';cat='alimentacion';}
-      else if(/netflix|spotify|amazon prime|disney|youtube|suscripci/i.test(desc)){tipo='No nec.';cat='entretenimiento';}
-      else if(/skandia|seguros|pensión|fondo|inversión|accival|trii|hapi/i.test(desc)){tipo='Ahorro';cat='retiro';}
-      else{tipo='No nec.';cat='entretenimiento';}
+      var dl = desc.toLowerCase();
+      if (/farmacia|drogueria|clinica|hospital|medico|salud|eps/i.test(desc)) { tipo='Necesario'; cat='salud'; }
+      else if (/supermercad|exito|carulla|jumbo|olimpica|mercado|d1|ara|novaventa/i.test(desc)) { tipo='Necesario'; cat='alimentacion'; }
+      else if (/gasolina|combustible|parqueadero|peaje|transmilenio|sitp|uber|taxi|cabify/i.test(desc)) { tipo='Necesario'; cat='transporte'; }
+      else if (/arriendo|administracion|acueducto|energia|electricidad|epm|codensa/i.test(desc)) { tipo='Necesario'; cat='vivienda'; }
+      else if (/tarjeta|pagaste|cuota|credito|prestamo/i.test(desc)) { tipo='Necesario'; cat='prestamos'; }
+      else if (/cajero|retiro/i.test(desc)) { tipo='Necesario'; cat='vivienda'; }
+      else if (/rappi|domicilio|restaurante|mcdonald|kfc|subway|pizza/i.test(desc)) { tipo='No nec.'; cat='alimentacion'; }
+      else if (/netflix|spotify|amazon|disney|youtube|suscripci/i.test(desc)) { tipo='No nec.'; cat='entretenimiento'; }
+      else if (/skandia|seguros|pension|fondo|accival|trii|hapi/i.test(desc)) { tipo='Ahorro'; cat='retiro'; }
     }
-    movs.push({fecha,desc,monto,tipo,cat,esIngreso,esDuplicado,incluir,signo});
-  });
-  if(!movs.length){sA(msg,'err','⚠ No se detectaron movimientos. Verifica el formato.');return;}
-  nuMovimientos=movs;renderNuPreview(movs);
-  const excluidos=movs.filter(m=>m.esDuplicado).length;
-  sA(msg,'ok',`✓ ${movs.length} movimientos detectados${excluidos>0?' · '+excluidos+' posible(s) salario excluido(s)':''}`);
+    movs.push({fecha:fecha, desc:desc, monto:monto, tipo:tipo, cat:cat, esIngreso:esIngreso, esDuplicado:esDuplicado, incluir:incluir, signo:signo});
+  }
+  if (!movs.length) { sA(msg,'err','No se detectaron movimientos. Verifica el formato.'); return; }
+  nuMovimientos = movs;
+  renderNuPreview(movs);
+  var excluidos = 0;
+  for (var ei = 0; ei < movs.length; ei++) { if (movs[ei].esDuplicado) excluidos++; }
+  var msgTxt = movs.length + ' movimientos detectados';
+  if (excluidos > 0) msgTxt += ' - ' + excluidos + ' posible(s) salario excluido(s)';
+  sA(msg, 'ok', msgTxt);
 }
-function renderNuPreview(movs){
-  const cats=['vivienda','alimentacion','transporte','salud','entretenimiento','prestamos','imprevistos','oxigeno','retiro','inversiones'];
-  const inc=movs.filter(function(_,i){const el=document.getElementById('nu-inc-'+i);return el?el.checked:_.incluir;});
-  const totalGastos=inc.filter(function(m){return !m.esIngreso;}).reduce(function(s,m){return s+m.monto;},0);
-  const totalIngresos=inc.filter(function(m){return m.esIngreso;}).reduce(function(s,m){return s+m.monto;},0);
-  document.getElementById('nuPreviewTitle').textContent=movs.length+' movimientos detectados';
-  document.getElementById('nuResumen').innerHTML='<span style="color:var(--red);">↓ Gastos: '+fmt(totalGastos)+'</span> &nbsp;|&nbsp; <span style="color:var(--accent);">↑ Ingresos: '+fmt(totalIngresos)+'</span>';
-  const catNames={vivienda:'Vivienda',alimentacion:'Alimentación',transporte:'Transporte',salud:'Salud',entretenimiento:'Entretenimiento',prestamos:'Préstamos',imprevistos:'Imprevistos',oxigeno:'Oxígeno',retiro:'Retiro',inversiones:'Inversiones'};
-  var rows='';
-  movs.forEach(function(m,i){
-    var catOpts='';cats.forEach(function(cat){catOpts+='<option value="'+cat+'"'+(cat===m.cat?' selected':'')+'>'+catNames[cat]+'</option>';});
-    var tipoOpts='';['Necesario','No nec.','Ahorro'].forEach(function(t){tipoOpts+='<option'+(t===m.tipo?' selected':'')+'>'+t+'</option>';});
-    var tipoCol=m.esIngreso?'var(--accent)':m.tipo==='Necesario'?'var(--blue)':m.tipo==='Ahorro'?'var(--purple)':'var(--amber)';
-    var rowBg=m.esDuplicado?'background:rgba(251,191,36,0.08);':'';
-    var dupBadge=m.esDuplicado?'<span style="font-size:9px;background:var(--amberDim);color:var(--amber);border-radius:3px;padding:1px 5px;margin-left:4px;">⚠ posible salario</span>':'';
-    var catTipoHtml=m.esIngreso
-      ?'<div style="color:var(--accent);font-size:10px;font-weight:600;grid-column:span 2;">Ingreso puntual</div>'
-      :'<select id="nu-cat-'+i+'" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;">'+catOpts+'</select>'
-       +'<select id="nu-tipo-'+i+'" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:'+tipoCol+';border-radius:4px;">'+tipoOpts+'</select>';
-    var montoColor=m.esIngreso?'var(--accent)':'var(--red)';
-    rows+='<div style="'+rowBg+'display:grid;grid-template-columns:28px 85px 1fr 110px 100px 90px 24px;gap:6px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--border);font-size:11px;">'
-      +'<input type="checkbox" id="nu-inc-'+i+'" '+(m.incluir?'checked':'')+' onchange="nuMovimientos['+i+'].incluir=this.checked;renderNuPreview(nuMovimientos);" style="width:14px;height:14px;cursor:pointer;accent-color:var(--accent);"/>'
-      +'<input type="date" id="nu-fecha-'+i+'" value="'+m.fecha+'" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;width:100%;"/>'
-      +'<div><input type="text" id="nu-desc-'+i+'" value="'+m.desc.replace(/"/g,'&quot;')+'" style="font-size:11px;padding:3px 6px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;width:100%;"/>'+dupBadge+'</div>'
-      +'<div style="font-family:monospace;font-weight:700;color:'+montoColor+';">'+m.signo+fmt(m.monto)+'</div>'
-      +catTipoHtml
-      +'<button class="bx" onclick="nuMovimientos.splice('+i+',1);renderNuPreview(nuMovimientos);" title="Eliminar"><i class="fa-solid fa-xmark"></i></button>'
-      +'</div>';
-  });
-  document.getElementById('nuTabla').innerHTML='<div style="display:grid;grid-template-columns:28px 85px 1fr 110px 100px 90px 24px;gap:6px;padding:6px 4px;border-bottom:2px solid var(--border2);font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;"><div>✓</div><div>Fecha</div><div>Descripción</div><div>Monto</div><div>Categoría</div><div>Tipo</div><div></div></div>'+rows;
-  document.getElementById('nuPreview').style.display='block';
+
+function renderNuPreview(movs) {
+  var catNames = {vivienda:'Vivienda',alimentacion:'Alimentacion',transporte:'Transporte',salud:'Salud',entretenimiento:'Entretenimiento',prestamos:'Prestamos',imprevistos:'Imprevistos',oxigeno:'Oxigeno',retiro:'Retiro',inversiones:'Inversiones'};
+  var cats = ['vivienda','alimentacion','transporte','salud','entretenimiento','prestamos','imprevistos','oxigeno','retiro','inversiones'];
+  var totalGastos = 0; var totalIngresos = 0;
+  for (var ci = 0; ci < movs.length; ci++) {
+    var el = document.getElementById('nu-inc-' + ci);
+    var checked = el ? el.checked : movs[ci].incluir;
+    if (checked && !movs[ci].esIngreso) totalGastos += movs[ci].monto;
+    if (checked && movs[ci].esIngreso) totalIngresos += movs[ci].monto;
+  }
+  document.getElementById('nuPreviewTitle').textContent = movs.length + ' movimientos detectados';
+  document.getElementById('nuResumen').innerHTML = '<span style="color:var(--red);">Gastos: ' + fmt(totalGastos) + '</span> &nbsp;|&nbsp; <span style="color:var(--accent);">Ingresos: ' + fmt(totalIngresos) + '</span>';
+  var header = '<div style="display:grid;grid-template-columns:30px 90px 1fr 110px 100px 90px 26px;gap:6px;padding:6px 4px;border-bottom:2px solid var(--border2);font-size:10px;font-weight:600;color:var(--text3);">';
+  header += '<div></div><div>Fecha</div><div>Descripcion</div><div>Monto</div><div>Categoria</div><div>Tipo</div><div></div></div>';
+  var rows = '';
+  for (var i = 0; i < movs.length; i++) {
+    var mov = movs[i];
+    var bg = mov.esDuplicado ? 'background:rgba(251,191,36,0.08);' : '';
+    var montoColor = mov.esIngreso ? 'var(--accent)' : 'var(--red)';
+    var checked = mov.incluir ? 'checked' : '';
+    var dupBadge = mov.esDuplicado ? ' <span style="font-size:9px;background:var(--amberDim);color:var(--amber);border-radius:3px;padding:1px 5px;">posible salario</span>' : '';
+    var catOpts = '';
+    for (var ci2 = 0; ci2 < cats.length; ci2++) {
+      var sel = cats[ci2] === mov.cat ? ' selected' : '';
+      catOpts += '<option value="' + cats[ci2] + '"' + sel + '>' + catNames[cats[ci2]] + '</option>';
+    }
+    var tipoOpts = '';
+    var tipoList = ['Necesario','No nec.','Ahorro'];
+    for (var ti = 0; ti < tipoList.length; ti++) {
+      var tsel = tipoList[ti] === mov.tipo ? ' selected' : '';
+      tipoOpts += '<option' + tsel + '>' + tipoList[ti] + '</option>';
+    }
+    var catTipo = '';
+    if (mov.esIngreso) {
+      catTipo = '<div style="color:var(--accent);font-size:10px;font-weight:600;grid-column:span 2;">Ingreso puntual</div>';
+    } else {
+      catTipo = '<select id="nu-cat-' + i + '" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;">' + catOpts + '</select>';
+      catTipo += '<select id="nu-tipo-' + i + '" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;">' + tipoOpts + '</select>';
+    }
+    var descVal = mov.desc.replace(/"/g, '&quot;');
+    rows += '<div style="' + bg + 'display:grid;grid-template-columns:30px 90px 1fr 110px 100px 90px 26px;gap:6px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--border);font-size:11px;">';
+    rows += '<input type="checkbox" id="nu-inc-' + i + '" ' + checked + ' onchange="nuMovimientos[' + i + '].incluir=this.checked;renderNuPreview(nuMovimientos);" style="width:14px;height:14px;cursor:pointer;">';
+    rows += '<input type="date" id="nu-fecha-' + i + '" value="' + mov.fecha + '" style="font-size:10px;padding:3px 5px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;width:100%;">';
+    rows += '<div><input type="text" id="nu-desc-' + i + '" value="' + descVal + '" style="font-size:11px;padding:3px 6px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:4px;width:100%;">' + dupBadge + '</div>';
+    rows += '<div style="font-family:monospace;font-weight:700;color:' + montoColor + ';">' + mov.signo + fmt(mov.monto) + '</div>';
+    rows += catTipo;
+    rows += '<button class="bx" onclick="nuMovimientos.splice(' + i + ',1);renderNuPreview(nuMovimientos);" title="Eliminar"><i class="fa-solid fa-xmark"></i></button>';
+    rows += '</div>';
+  }
+  document.getElementById('nuTabla').innerHTML = header + rows;
+  document.getElementById('nuPreview').style.display = 'block';
 }
-function confirmarExtractoNu(){
-  const sel=nuMovimientos.filter((_,i)=>document.getElementById('nu-inc-'+i)?.checked);
-  if(!sel.length){sA(document.getElementById('nuMsg'),'err','⚠ Selecciona al menos un movimiento');return;}
-  let cargados=0,ingresos=0;
-  sel.forEach(m=>{
-    const i=nuMovimientos.indexOf(m);
-    const fecha=document.getElementById('nu-fecha-'+i)?.value||m.fecha;
-    const desc=document.getElementById('nu-desc-'+i)?.value.trim()||m.desc;
-    if(m.esIngreso){S.ingresosPuntuales.push({id:nextId(),desc,monto:m.monto,fecha,tipo:'Nu Bank',nota:'Importado desde extracto'});ingresos++;}
-    else{const cat=document.getElementById('nu-cat-'+i)?.value||m.cat;const tipo=document.getElementById('nu-tipo-'+i)?.value||m.tipo;S.gastos.unshift({id:nextId(),desc,monto:m.monto,fecha,cat,tipo,sub:'Nu Bank',nota:'Importado desde extracto'});cargados++;}
-  });
-  sv();nuMovimientos=[];
-  document.getElementById('nuTexto').value='';document.getElementById('nuPreview').style.display='none';
-  sA(document.getElementById('nuMsg'),'ok',`✓ ${cargados} gastos y ${ingresos} ingresos cargados`);
-  rU8();rD();alert(`✅ Importación completa\n\n• ${cargados} gastos cargados al historial\n• ${ingresos} ingresos registrados como puntuales`);
+
+function confirmarExtractoNu() {
+  var sel = [];
+  for (var i = 0; i < nuMovimientos.length; i++) {
+    var el = document.getElementById('nu-inc-' + i);
+    if (el && el.checked) sel.push({mov: nuMovimientos[i], idx: i});
+  }
+  if (!sel.length) { sA(document.getElementById('nuMsg'),'err','Selecciona al menos un movimiento'); return; }
+  var cargados = 0; var ingresos = 0;
+  for (var si = 0; si < sel.length; si++) {
+    var m = sel[si].mov; var i = sel[si].idx;
+    var fecha = (document.getElementById('nu-fecha-' + i) || {}).value || m.fecha;
+    var desc = ((document.getElementById('nu-desc-' + i) || {}).value || m.desc).trim();
+    if (m.esIngreso) {
+      S.ingresosPuntuales.push({id:nextId(), desc:desc, monto:m.monto, fecha:fecha, tipo:'Nu Bank', nota:'Importado desde extracto'});
+      ingresos++;
+    } else {
+      var cat = (document.getElementById('nu-cat-' + i) || {}).value || m.cat;
+      var tipo = (document.getElementById('nu-tipo-' + i) || {}).value || m.tipo;
+      S.gastos.unshift({id:nextId(), desc:desc, monto:m.monto, fecha:fecha, cat:cat, tipo:tipo, sub:'Nu Bank', nota:'Importado desde extracto'});
+      cargados++;
+    }
+  }
+  sv(); nuMovimientos = [];
+  document.getElementById('nuTexto').value = '';
+  document.getElementById('nuPreview').style.display = 'none';
+  sA(document.getElementById('nuMsg'), 'ok', cargados + ' gastos y ' + ingresos + ' ingresos cargados');
+  rU8(); rD();
+  alert('Importacion completa: ' + cargados + ' gastos y ' + ingresos + ' ingresos cargados.');
 }
-function exportarExtractoExcel(){
-  if(!nuMovimientos.length)return;
-  const headers=['Fecha','Descripción','Monto','Tipo movimiento','Categoría','Tipo gasto','Incluido'];
-  const rows=nuMovimientos.map((m,i)=>{
-    const fecha=document.getElementById('nu-fecha-'+i)?.value||m.fecha;
-    const desc=document.getElementById('nu-desc-'+i)?.value||m.desc;
-    const cat=m.esIngreso?'Ingreso':document.getElementById('nu-cat-'+i)?.value||m.cat;
-    const tipo=m.esIngreso?'Ingreso puntual':document.getElementById('nu-tipo-'+i)?.value||m.tipo;
-    const inc=document.getElementById('nu-inc-'+i)?.checked?'Sí':'No';
-    return[fecha,desc,(m.esIngreso?'+':'-')+m.monto,m.esIngreso?'Ingreso':'Gasto',CL[cat]||cat,tipo,inc];
-  });
-  const csv=headers.join(',')+'
-'+rows.map(r=>r.map(v=>`"${v}"`).join(',')).join('
-');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'}));
-  a.download=`extracto_nu_${new Date().toISOString().split('T')[0]}.csv`;a.click();
-  sA(document.getElementById('nuMsg'),'ok','✓ Excel descargado');
+
+function exportarExtractoExcel() {
+  if (!nuMovimientos.length) return;
+  var catNames = {vivienda:'Vivienda',alimentacion:'Alimentacion',transporte:'Transporte',salud:'Salud',entretenimiento:'Entretenimiento',prestamos:'Prestamos',imprevistos:'Imprevistos',oxigeno:'Oxigeno',retiro:'Retiro',inversiones:'Inversiones',ingreso:'Ingreso'};
+  var csv = 'Fecha,Descripcion,Monto,Tipo movimiento,Categoria,Tipo gasto,Incluido\n';
+  for (var i = 0; i < nuMovimientos.length; i++) {
+    var m = nuMovimientos[i];
+    var fecha = (document.getElementById('nu-fecha-' + i) || {}).value || m.fecha;
+    var desc = (document.getElementById('nu-desc-' + i) || {}).value || m.desc;
+    var cat = m.esIngreso ? 'Ingreso' : (document.getElementById('nu-cat-' + i) || {}).value || m.cat;
+    var tipo = m.esIngreso ? 'Ingreso puntual' : (document.getElementById('nu-tipo-' + i) || {}).value || m.tipo;
+    var inc = (document.getElementById('nu-inc-' + i) || {}).checked ? 'Si' : 'No';
+    csv += '"' + fecha + '","' + desc + '","' + (m.esIngreso?'+':'-') + m.monto + '","' + (m.esIngreso?'Ingreso':'Gasto') + '","' + (catNames[cat]||cat) + '","' + tipo + '","' + inc + '"\n';
+  }
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = 'extracto_nu_' + new Date().toISOString().split('T')[0] + '.csv';
+  a.click();
+  sA(document.getElementById('nuMsg'), 'ok', 'Excel descargado');
 }
 
 // ══════════════════════════════════════════════════════════
